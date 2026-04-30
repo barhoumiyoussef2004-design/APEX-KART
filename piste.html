@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Piste — APEX KART Karting</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo">
+      <span class="logo-point"></span>
+      APEX <span>KART</span>
+    </a>
+    <nav>
+      <a href="index.html">Accueil</a>
+      <a href="apropos.html">À Propos</a>
+      <a href="piste.html" class="actif">La Piste</a>
+      <a href="services.html">Services</a>
+      <a href="classements.html">Classements</a>
+      <a href="galerie.html">Galerie</a>
+      <a href="contact.html">Contact</a>
+      <a href="reserver.html" class="nav-cta">Réserver ▶</a>
+    </nav>
+  </header>
+
+  <main>
+    <div id="top"></div>
+
+    <!--EN-TÊTE-->
+    <div class="page-header">
+      <div class="page-header-contenu">
+        <span class="label-section" style="margin-bottom: 14px;">Notre infrastructure</span>
+        <h1>LE <span>CIRCUIT</span><br>APEX KART</h1>
+        <p>
+          1580 mètres d'asphalte conçus pour l'adrénaline. 17 virages techniques variés,
+          une ligne droite principale et un tracé pensé pour tous les niveaux.
+        </p>
+      </div>
+    </div>
+
+    <!--PLAN DU CIRCUIT-->
+    <section>
+      <div class="grille-2">
+
+        <div style="display: flex; justify-content: center; align-items: center;">
+          <img src="media/circuit.jpg"
+               alt="Plan du circuit APEX KART"
+               style="width: 100%; max-width: 600px; display: block; filter: drop-shadow(0 0 20px rgba(232,0,29,0.15)); border-radius: 8px;">
+        </div>
+
+        <div>
+          <span class="label-section">Analyse du tracé</span>
+          <h2 class="titre-section" style="margin-top: 10px;">17 virages <span class="rouge">techniques</span></h2>
+          <p style="color: var(--gris-clair); margin-top: 14px; font-size: 0.95rem; line-height: 1.8;">
+            Chaque virage du circuit APEX KART a été pensé pour proposer des défis différents.
+            Découvrez les caractéristiques de chaque section.
+          </p>
+
+          <div style="margin-top: 24px; overflow-x: auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Virage</th>
+                  <th>Type</th>
+                  <th>Difficulté</th>
+                  <th>Conseil</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="chrono">V1</td>
+                  <td style="color: var(--blanc);">Épingle droite (sommet)</td>
+                  <td><span style="color: var(--rouge);">●●●</span></td>
+                  <td style="font-size: 0.8rem;">Freinez fort, pivot serré</td>
+                </tr>
+                <tr>
+                  <td class="chrono">V2</td>
+                  <td style="color: var(--blanc);">Gauche d'enchaînement</td>
+                  <td><span style="color: var(--jaune);">●●○</span></td>
+                  <td style="font-size: 0.8rem;">Restez à l'extérieur</td>
+                </tr>
+                <tr>
+                  <td class="chrono">V3</td>
+                  <td style="color: var(--blanc);">Droite serrée (top)</td>
+                  <td><span style="color: var(--rouge);">●●●</span></td>
+                  <td style="font-size: 0.8rem;">Frein tardif</td>
+                </tr>
+                <tr>
+                  <td class="chrono">V4</td>
+                  <td style="color: var(--blanc);">S gauche enchaînée</td>
+                  <td><span style="color: var(--jaune);">●●○</span></td>
+                  <td style="font-size: 0.8rem;">Liée au V3</td>
+                </tr>
+                <tr>
+                  <td class="chrono">V5</td>
+                  <td style="color: var(--blanc);">Boucle droite ext.</td>
+                  <td><span style="color: var(--rouge); opacity: 0.5;">●○○</span></td>
+                  <td style="font-size: 0.8rem;">Pleine vitesse</td>
+                </tr>
+                <tr>
+                  <td class="chrono">V6</td>
+                  <td style="color: var(--blanc);">Gauche tour extérieur</td>
+                  <td><span style="color: var(--jaune);">●●○</span></td>
+                  <td style="font-size: 0.8rem;">Maintien de vitesse</td>
+                </tr>
+                <tr>
+                  <td class="chrono">V7</td>
+                  <td style="color: var(--blanc);">Droite retour (top)</td>
+                  <td><span style="color: var(--rouge);">●●●</span></td>
+                  <td style="font-size: 0.8rem;">Trajectoire précise</td>
+                </tr>
+                <tr>
+                  <td class="chrono">V8</td>
+                  <td style="color: var(--blanc);">Sweepeur gauche</td>
+                  <td><span style="color: var(--rouge); opacity: 0.5;">●○○</span></td>
+                  <td style="font-size: 0.8rem;">Apex large, à fond</td>
+                </tr>
+                <tr>
+                  <td class="chrono">V9</td>
+                  <td style="color: var(--blanc);">Droite entrée milieu</td>
+                  <td><span style="color: var(--rouge);">●●●</span></td>
+                  <td style="font-size: 0.8rem;">Frein progressif</td>
+                </tr>
+                <tr>
+                  <td class="chrono">V10</td>
+                  <td style="color: var(--blanc);">S gauche (milieu)</td>
+                  <td><span style="color: var(--jaune);">●●○</span></td>
+                  <td style="font-size: 0.8rem;">Rythme continu</td>
+                </tr>
+                <tr>
+                  <td class="chrono">V11</td>
+                  <td style="color: var(--blanc);">S droite (milieu)</td>
+                  <td><span style="color: var(--jaune);">●●○</span></td>
+                  <td style="font-size: 0.8rem;">Liée au V10</td>
+                </tr>
+                <tr>
+                  <td class="chrono">V12</td>
+                  <td style="color: var(--blanc);">Gauche descente basse</td>
+                  <td><span style="color: var(--rouge);">●●●</span></td>
+                  <td style="font-size: 0.8rem;">Point de corde serré</td>
+                </tr>
+                <tr>
+                  <td class="chrono">V13</td>
+                  <td style="color: var(--blanc);">Droite entrée boucle</td>
+                  <td><span style="color: var(--jaune);">●●○</span></td>
+                  <td style="font-size: 0.8rem;">Trajectoire large</td>
+                </tr>
+                <tr>
+                  <td class="chrono">V14</td>
+                  <td style="color: var(--blanc);">Grande épingle gauche</td>
+                  <td><span style="color: var(--rouge);">●●●</span></td>
+                  <td style="font-size: 0.8rem;">Freinage maximum</td>
+                </tr>
+                <tr>
+                  <td class="chrono">V15</td>
+                  <td style="color: var(--blanc);">Droite sortie boucle</td>
+                  <td><span style="color: var(--rouge); opacity: 0.5;">●○○</span></td>
+                  <td style="font-size: 0.8rem;">Accélérez fort</td>
+                </tr>
+                <tr>
+                  <td class="chrono">V16</td>
+                  <td style="color: var(--blanc);">Gauche retour droite</td>
+                  <td><span style="color: var(--jaune);">●●○</span></td>
+                  <td style="font-size: 0.8rem;">Fluide et continu</td>
+                </tr>
+                <tr>
+                  <td class="chrono">V17</td>
+                  <td style="color: var(--blanc);">Droite finale (méta)</td>
+                  <td><span style="color: var(--rouge);">●●●</span></td>
+                  <td style="font-size: 0.8rem;">Accélérez dès l'apex</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!--STATS-->
+    <section class="section-fond-2">
+      <div class="en-tete-section centre">
+        <span class="label-section">Caractéristiques</span>
+        <h2 class="titre-section">Les <span class="rouge">chiffres</span> du circuit</h2>
+      </div>
+
+      <div style="display: flex; flex-wrap: wrap; gap: 2px; background: var(--bord);">
+
+        <div class="stat-cell" style="flex: 1; min-width: 180px; background: var(--noir-2); padding: 36px; text-align: center;">
+          <span class="stat-number" data-count="1580" style="display: block; font-family: Impact, sans-serif; font-size: 3.5rem; font-weight: 900; color: var(--rouge); line-height: 1;">1580</span>
+          <span style="display: block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gris); margin-top: 6px;">Mètres de piste</span>
+        </div>
+
+        <div class="stat-cell" style="flex: 1; min-width: 180px; background: var(--noir-2); padding: 36px; text-align: center;">
+          <span class="stat-number" data-count="17" style="display: block; font-family: Impact, sans-serif; font-size: 3.5rem; font-weight: 900; color: var(--rouge); line-height: 1;">17</span>
+          <span style="display: block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gris); margin-top: 6px;">Virages</span>
+        </div>
+
+        <div class="stat-cell" style="flex: 1; min-width: 180px; background: var(--noir-2); padding: 36px; text-align: center;">
+          <span class="stat-number" data-count="108" style="display: block; font-family: Impact, sans-serif; font-size: 3.5rem; font-weight: 900; color: var(--rouge); line-height: 1;">108</span>
+          <span style="display: block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gris); margin-top: 6px;">km/h vitesse max</span>
+        </div>
+
+        <div class="stat-cell" style="flex: 1; min-width: 180px; background: var(--noir-2); padding: 36px; text-align: center;">
+          <span style="display: block; font-family: Impact, sans-serif; font-size: 3.5rem; font-weight: 900; color: var(--jaune); line-height: 1;">1:10.381</span>
+          <span style="display: block; font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gris); margin-top: 6px;">Record absolu</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!--GALERIE-->
+    <section>
+      <div class="en-tete-section">
+        <span class="label-section">Galerie</span>
+        <h2 class="titre-section">En <span class="rouge">images</span></h2>
+      </div>
+
+      <div class="galerie-float">
+        <img src="media/Kart en pleine action - virage serré.jpg"
+             alt="Kart en pleine action - virage serré">
+        <img src="media/start_finish line.jpg"
+             alt="Vue de la piste - ligne droite principale">
+        <img src="media/préparation d'une kart.jpg"
+             alt="Kart dans les stands - préparation">
+        <img src="media/podium.jpg"
+             alt="Podium - remise des trophées">
+        <img src="media/Session nocturne.jpg"
+             alt="Session nocturne - éclairage LED">
+        <img src="media/circuit vue aerienne.jpg"
+             alt="Vue aérienne du circuit APEX KART">
+      </div>
+    </section>
+
+    <!--VIDÉO CIRCUIT-->
+    <section class="section-fond-2">
+      <div class="grille-2">
+        <div>
+          <span class="label-section">Visite virtuelle</span>
+          <h2 class="titre-section" style="margin-top: 10px;">Le circuit <span class="rouge">en vidéo</span></h2>
+          <p style="color: var(--gris-clair); margin-top: 14px; line-height: 1.8; font-size: 0.95rem;">
+            Découvrez le circuit APEX KART depuis le cockpit d'un kart.
+            Suivez la trajectoire idéale, analysez les points de freinage et
+            préparez votre prochaine session.
+          </p>
+          <p style="color: var(--gris-clair); margin-top: 12px; line-height: 1.8; font-size: 0.9rem;">
+            Le tour de référence a été réalisé par notre instructeur en chef
+            avec le record du circuit établi à <strong style="color: var(--rouge);">1:10:381</strong>.
+          </p>
+          <div style="margin-top: 24px;">
+            <a href="reserver.html" class="btn btn-rouge">Réserver ma session</a>
+          </div>
+        </div>
+
+        <div>
+          <div class="media-bloc">
+            <video controls poster="media/preview.png" style="width: 100%;">
+              <source src="media/onboard.mp4" type="video/mp4">
+              <p style="padding: 20px; color: var(--gris); text-align: center;">
+                Votre navigateur ne supporte pas la balise vidéo.
+                <a href="https://www.youtube.com/watch?v=DuoeFsdlHrQ" class="lien-discret">Voir la vidéo</a>.
+              </p>
+            </video>
+            <div class="media-titre">Tour de référence — Record 1:10:381 — Instructeur Chef</div>
+          </div>
+
+          <div class="media-bloc" style="margin-top: 16px; padding: 16px;">
+            <p style="font-size: 0.75rem; color: var(--gris); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px;">
+              🎧 Ambiance circuit — Sons de moteurs
+            </p>
+            <audio controls style="width: 100%;">
+              <source src="media/Ambiance circuit — Sons de moteurs.mp3" type="audio/mpeg">
+              Votre navigateur ne supporte pas la balise audio.
+            </audio>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--RÈGLES DE SÉCURITÉ-->
+    <section>
+      <div class="grille-2">
+        <div>
+          <span class="label-section">Sécurité avant tout</span>
+          <h2 class="titre-section" style="margin-top: 10px;">Règles du <span class="rouge">circuit</span></h2>
+          <p style="color: var(--gris-clair); margin-top: 14px; line-height: 1.8; font-size: 0.95rem;">
+            Le respect des règles de sécurité est obligatoire pour tous les pilotes.
+            Un briefing est effectué avant chaque session.
+          </p>
+
+          <ol class="liste-regles" style="margin-top: 28px;">
+            <li><span>Port du casque FIA obligatoire pendant toute la session sur piste.</span></li>
+            <li><span>Ceinture de sécurité bouclée avant le départ des stands.</span></li>
+            <li><span>Respect des drapeaux signaux : jaune = ralentir, rouge = arrêt immédiat.</span></li>
+            <li><span>Interdiction de percuter volontairement les autres karts.</span></li>
+            <li><span>Pas de téléphone portable ni d'objet personnel en piste.</span></li>
+            <li><span>Rester dans le kart en cas de panne, attendre les commissaires.</span></li>
+            <li><span>Limiter la vitesse dans les stands : 10 km/h maximum.</span></li>
+            <li><span>Signaler tout dysfonctionnement au personnel avant la session.</span></li>
+          </ol>
+        </div>
+
+        <div>
+          <span class="label-section">Équipements</span>
+          <h2 class="titre-section" style="margin-top: 10px;">Nos <span class="rouge">karts</span></h2>
+
+          <div style="margin-top: 24px; overflow-x: auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Modèle</th>
+                  <th>Cylindrée</th>
+                  <th>Vitesse max</th>
+                  <th>Public</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td style="color: var(--blanc); font-weight: 700;">Mini Kart</td>
+                  <td>100cc</td>
+                  <td>60 km/h</td>
+                  <td><span class="badge-cat badge-junior">Junior 8–12 ans</span></td>
+                </tr>
+                <tr>
+                  <td style="color: var(--blanc); font-weight: 700;">Standard</td>
+                  <td>200cc</td>
+                  <td>75 km/h</td>
+                  <td><span class="badge-cat badge-debutant">Débutant</span></td>
+                </tr>
+                <tr>
+                  <td style="color: var(--blanc); font-weight: 700;">Performance</td>
+                  <td>270cc</td>
+                  <td>90 km/h</td>
+                  <td><span class="badge-cat badge-senior">Senior</span></td>
+                </tr>
+                <tr>
+                  <td style="color: var(--blanc); font-weight: 700;">Compétition</td>
+                  <td>270cc+</td>
+                  <td>108 km/h</td>
+                  <td><span class="badge-cat badge-expert">Expert</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="margin-top: 24px; background: var(--noir-2); border: 1px solid var(--bord); padding: 20px; border-left: 3px solid var(--rouge);">
+            <p style="font-size: 0.88rem; color: var(--gris-clair); line-height: 1.75;">
+              <strong style="color: var(--blanc);">Entretien :</strong> Chaque kart est inspecté et entretenu chaque matin par nos mécaniciens.
+              Vidange moteur toutes les 30 heures, changement de pneus selon l'usure.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="bande-cta">
+      <h2>VENEZ ROULER SUR L'APEX KART</h2>
+      <p>1580 mètres de piste vous attendent. Réservation en ligne 24h/24.</p>
+      <a href="reserver.html" class="btn-blanc">RÉSERVER MAINTENANT ▶</a>
+    </div>
+    <a href="#top" class="scroll-top">↑</a>
+
+  </main>
+
+  <footer>
+    <div class="footer-grille">
+      <div class="footer-col large">
+        <span class="footer-logo">APEX <span>KART</span></span>
+        <p class="footer-desc">Circuit de karting professionnel CIK-FIA. 1580 mètres d'asphalte et 20 karts pour tous les niveaux.</p>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-titre">Navigation</span>
+        <ul class="footer-liens">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="apropos.html">À Propos</a></li>
+          <li><a href="piste.html">La Piste</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="classements.html">Classements</a></li>
+          <li><a href="galerie.html">Galerie</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-titre">Contact</span>
+        <ul class="footer-liens">
+          <li><a href="tel:+21671440300">📞 +216 71 440 300</a></li>
+          <li><a href="mailto:contact@apexkart.tn">✉️ contact@apexkart.tn</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-titre">Liens rapides</span>
+        <ul class="footer-liens">
+          <li><a href="reserver.html">→ Réserver en ligne</a></li>
+          <li><a href="classements.html">→ Classements</a></li>
+          <li><a href="#top">↑ Haut de page</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bas">
+      <span>© 2026 APEX KART. Tous droits réservés.</span>
+      <span>apexkart.tn</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

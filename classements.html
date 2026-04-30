@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classements Pilotes — APEX KART Karting</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo">
+      <span class="logo-point"></span>
+      APEX <span>KART</span>
+    </a>
+    <nav>
+      <a href="index.html">Accueil</a>
+      <a href="apropos.html">À Propos</a>
+      <a href="piste.html">La Piste</a>
+      <a href="services.html">Services</a>
+      <a href="classements.html" class="actif">Classements</a>
+      <a href="galerie.html">Galerie</a>
+      <a href="contact.html">Contact</a>
+      <a href="reserver.html" class="nav-cta">Réserver ▶</a>
+    </nav>
+  </header>
+
+  <main>
+    <div id="top"></div>
+
+    <div class="page-header">
+      <div class="page-header-contenu">
+        <span class="label-section" style="margin-bottom: 14px;">Saison 2025</span>
+        <h1>CLASSEMENT<br><span>GÉNÉRAL</span></h1>
+        <p>Tableau mis à jour après chaque session. Le record du jour du circuit est indiqué par ⚡.</p>
+      </div>
+    </div>
+
+    <!--BANDE RECORD-->
+    <div style="background: var(--noir-3); border-bottom: 1px solid var(--bord); padding: 20px 4%; display: flex; gap: 40px; flex-wrap: wrap; align-items: center;">
+      <div>
+        <span style="display: block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gris); margin-bottom: 4px;">⚡ Record du saison</span>
+        <span style="font-family: Impact, sans-serif; font-size: 2.2rem; font-weight: 900; color: var(--jaune);">1:14:443</span>
+      </div>
+      <div>
+        <span style="display: block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gris); margin-bottom: 4px;">Pilote</span>
+        <span style="font-family: Impact, sans-serif; font-size: 1.5rem; font-weight: 700; text-transform: uppercase; color: var(--blanc);">🇫🇷 MARTIN Lucas</span>
+      </div>
+      <div>
+        <span style="display: block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gris); margin-bottom: 4px;">Date</span>
+        <span style="font-size: 0.95rem; color: var(--gris-clair); font-family: monospace;">14 mars 2025</span>
+      </div>
+      <div>
+        <span style="display: block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gris); margin-bottom: 4px;">Kart</span>
+        <span style="font-size: 0.95rem; color: var(--gris-clair); font-family: monospace;">K7 — 270cc</span>
+      </div>
+    </div>
+
+    <!--PODIUM VISUEL-->
+    <section class="section-fond-2">
+      <div class="en-tete-section centre">
+        <span class="label-section">Top 3 de la saison</span>
+        <h2 class="titre-section">Le <span class="rouge">Podium</span></h2>
+      </div>
+
+      <div class="podium-conteneur">
+
+        <!-- 2e place -->
+        <div class="podium-pilote podium-2e">
+          <div class="podium-avatar">S</div>
+          <div class="podium-pays">🇫🇷</div>
+          <div class="podium-nom">DUBOIS Sara</div>
+          <div class="podium-chrono">01:14.493</div>
+          <div class="podium-pts"> 421 pts</div>
+          <div class="podium-marche podium-marche-2">
+            <span class="podium-medaille">🥈</span>
+            <span class="podium-rang-num">2</span>
+          </div>
+        </div>
+
+        <!-- 1re place -->
+        <div class="podium-pilote podium-1er">
+          <div class="podium-couronne">👑</div>
+          <div class="podium-avatar podium-avatar-or">M</div>
+          <div class="podium-pays">🇫🇷</div>
+          <div class="podium-nom podium-nom-or">MARTIN Lucas</div>
+          <div class="podium-chrono podium-chrono-or">⚡ 01:14.443</div>
+          <div class="podium-pts">423 pts</div>
+          <div class="podium-marche podium-marche-1">
+            <span class="podium-medaille">🥇</span>
+            <span class="podium-rang-num">1</span>
+          </div>
+        </div>
+
+        <!-- 3e place -->
+        <div class="podium-pilote podium-3e">
+          <div class="podium-avatar podium-avatar-bro">R</div>
+          <div class="podium-pays">🇮🇹</div>
+          <div class="podium-nom">ROSSI Marco</div>
+          <div class="podium-chrono">01:14.570</div>
+          <div class="podium-pts">410 pts</div>
+          <div class="podium-marche podium-marche-3">
+            <span class="podium-medaille">🥉</span>
+            <span class="podium-rang-num">3</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!--CLASSEMENT COMPLET-->
+    <section>
+      <div class="en-tete-section">
+        <span class="label-section">Résultats complets</span>
+        <h2 class="titre-section">Classement <span class="rouge">général</span></h2>
+        <p class="sous-titre-section">18 pilotes enregistrés cette saison. Classement par points (ordre décroissant).</p>
+      </div>
+
+      <!-- Légende catégories -->
+      <div style="display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; padding: 16px; background: var(--noir-2); border: 1px solid var(--bord); border-radius: 2px;">
+        <span style="font-size: 0.75rem; color: var(--gris); font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-right: 8px;">Catégories :</span>
+        <span class="badge-cat badge-debutant">Débutant</span>
+        <span style="font-size: 0.8rem; color: var(--gris);">Moins de 10 sessions</span>
+        <span style="color: var(--bord); margin: 0 4px;">|</span>
+        <span class="badge-cat badge-junior">Junior</span>
+        <span style="font-size: 0.8rem; color: var(--gris);">8–16 ans</span>
+        <span style="color: var(--bord); margin: 0 4px;">|</span>
+        <span class="badge-cat badge-senior">Senior</span>
+        <span style="font-size: 0.8rem; color: var(--gris);">16+ ans, 10–40 sessions</span>
+        <span style="color: var(--bord); margin: 0 4px;">|</span>
+        <span class="badge-cat badge-expert">Expert</span>
+        <span style="font-size: 0.8rem; color: var(--gris);">40+ sessions</span>
+      </div>
+
+      <div style="overflow-x: auto;">
+        <table>
+          <thead>
+            <tr>
+              <th style="width: 50px;">#</th>
+              <th>Pilote</th>
+              <th>Catégorie</th>
+              <th>Meilleur temps</th>
+              <th>Points</th>
+              <th>Sessions</th>
+              <th>Kart préféré</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr>
+              <td><span class="rang or">1</span></td>
+              <td><div class="pilote-nom">🇫🇷 MARTIN Lucas</div></td>
+              <td><span class="badge-cat badge-expert">Expert</span></td>
+              <td><span class="chrono record">⚡ 01:14.443</span></td>
+              <td style="font-family: Impact, sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--blanc);">423</td>
+              <td style="color: var(--gris); font-family: monospace;">48</td>
+              <td style="color: var(--gris);">K7</td>
+            </tr>
+
+            <tr>
+              <td><span class="rang arg">2</span></td>
+              <td><div class="pilote-nom">🇫🇷 DUBOIS Sara</div></td>
+              <td><span class="badge-cat badge-senior">Senior</span></td>
+              <td><span class="chrono">01:14.493</span></td>
+              <td style="font-family: Impact, sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--blanc);">421</td>
+              <td style="color: var(--gris); font-family: monospace;">42</td>
+              <td style="color: var(--gris);">K12</td>
+            </tr>
+
+            <tr>
+              <td><span class="rang bro">3</span></td>
+              <td><div class="pilote-nom">🇮🇹 ROSSI Marco</div></td>
+              <td><span class="badge-cat badge-expert">Expert</span></td>
+              <td><span class="chrono">01:14.570</span></td>
+              <td style="font-family: Impact, sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--blanc);">410</td>
+              <td style="color: var(--gris); font-family: monospace;">55</td>
+              <td style="color: var(--gris);">K3</td>
+            </tr>
+
+            <tr>
+              <td><span class="rang">4</span></td>
+              <td><div class="pilote-nom">🇩🇪 SCHMIDT Anna</div></td>
+              <td><span class="badge-cat badge-senior">Senior</span></td>
+              <td><span class="chrono">01:15.098</span></td>
+              <td style="font-family: Impact, sans-serif; font-size: 1.1rem; color: var(--blanc);">319</td>
+              <td style="color: var(--gris); font-family: monospace;">37</td>
+              <td style="color: var(--gris);">K9</td>
+            </tr>
+
+            <tr>
+              <td><span class="rang">5</span></td>
+              <td><div class="pilote-nom">🇲🇦 BENALI Karim</div></td>
+              <td><span class="badge-cat badge-junior">Junior</span></td>
+              <td><span class="chrono">01:15.179</span></td>
+              <td style="font-family: Impact, sans-serif; font-size: 1.1rem; color: var(--blanc);">242</td>
+              <td style="color: var(--gris); font-family: monospace;">31</td>
+              <td style="color: var(--gris);">K15</td>
+            </tr>
+
+            <tr>
+              <td><span class="rang">6</span></td>
+              <td><div class="pilote-nom">🇫🇷 LECONTE Pierre</div></td>
+              <td><span class="badge-cat badge-senior">Senior</span></td>
+              <td><span class="chrono">01:20.882</span></td>
+              <td style="font-family: Impact, sans-serif; font-size: 1.1rem; color: var(--blanc);">156</td>
+              <td style="color: var(--gris); font-family: monospace;">29</td>
+              <td style="color: var(--gris);">K4</td>
+            </tr>
+
+            <tr>
+              <td><span class="rang">7</span></td>
+              <td><div class="pilote-nom">🇪🇸 GARCIA Elena</div></td>
+              <td><span class="badge-cat badge-junior">Junior</span></td>
+              <td><span class="chrono">01:20.896</span></td>
+              <td style="font-family: Impact, sans-serif; font-size: 1.1rem; color: var(--blanc);">150</td>
+              <td style="color: var(--gris); font-family: monospace;">26</td>
+              <td style="color: var(--gris);">K11</td>
+            </tr>
+
+            <tr>
+              <td><span class="rang">8</span></td>
+              <td><div class="pilote-nom">🇬🇧 JOHNSON Mike</div></td>
+              <td><span class="badge-cat badge-expert">Expert</span></td>
+              <td><span class="chrono">01:21.243</span></td>
+              <td style="font-family: Impact, sans-serif; font-size: 1.1rem; color: var(--blanc);">73</td>
+              <td style="color: var(--gris); font-family: monospace;">60</td>
+              <td style="color: var(--gris);">K6</td>
+            </tr>
+
+            <tr>
+              <td><span class="rang">9</span></td>
+              <td><div class="pilote-nom">🇨🇦 TREMBLAY Sophie</div></td>
+              <td><span class="badge-cat badge-debutant">Débutant</span></td>
+              <td><span class="chrono">01:21.258</span></td>
+              <td style="font-family: Impact, sans-serif; font-size: 1.1rem; color: var(--blanc);">	64</td>
+              <td style="color: var(--gris); font-family: monospace;">18</td>
+              <td style="color: var(--gris);">K2</td>
+            </tr>
+
+            <tr>
+              <td><span class="rang">10</span></td>
+              <td><div class="pilote-nom">🇮🇹 FERRARI Lorenzo</div></td>
+              <td><span class="badge-cat badge-expert">Expert</span></td>
+              <td><span class="chrono">01:21.341</span></td>
+              <td style="font-family: Impact, sans-serif; font-size: 1.1rem; color: var(--blanc);">56</td>
+              <td style="color: var(--gris); font-family: monospace;">44</td>
+              <td style="color: var(--gris);">K8</td>
+            </tr>
+
+            <tr>
+              <td><span class="rang">11</span></td>
+              <td><div class="pilote-nom">🇫🇷 MOREAU Claire</div></td>
+              <td><span class="badge-cat badge-debutant">Débutant</span></td>
+              <td><span class="chrono">01:21.422</span></td>
+              <td style="font-family: Impact, sans-serif; font-size: 1.1rem; color: var(--blanc);">5</td>
+              <td style="color: var(--gris); font-family: monospace;">15</td>
+              <td style="color: var(--gris);">K13</td>
+            </tr>
+
+            <tr>
+              <td><span class="rang">12</span></td>
+              <td><div class="pilote-nom">🇩🇪 MUELLER Hans</div></td>
+              <td><span class="badge-cat badge-senior">Senior</span></td>
+              <td><span class="chrono">01:22.232</span></td>
+              <td style="font-family: Impact, sans-serif; font-size: 1.1rem; color: var(--blanc);">51</td>
+              <td style="color: var(--gris); font-family: monospace;">33</td>
+              <td style="color: var(--gris);">K5</td>
+            </tr>
+
+            <tr>
+              <td><span class="rang">13</span></td>
+              <td><div class="pilote-nom">🇧🇷 SANTOS Diego</div></td>
+              <td><span class="badge-cat badge-junior">Junior</span></td>
+              <td><span class="chrono">01:22.586</span></td>
+              <td style="font-family: Impact, sans-serif; font-size: 1.1rem; color: var(--blanc);">51</td>
+              <td style="color: var(--gris); font-family: monospace;">22</td>
+              <td style="color: var(--gris);">K10</td>
+            </tr>
+
+            <tr>
+              <td><span class="rang">14</span></td>
+              <td><div class="pilote-nom">🇨🇳 CHEN Wei</div></td>
+              <td><span class="badge-cat badge-senior">Senior</span></td>
+              <td><span class="chrono">01:23.029</span></td>
+              <td style="font-family: Impact, sans-serif; font-size: 1.1rem; color: var(--blanc);">41</td>
+              <td style="color: var(--gris); font-family: monospace;">27</td>
+              <td style="color: var(--gris);">K14</td>
+            </tr>
+
+            <tr>
+              <td><span class="rang">15</span></td>
+              <td><div class="pilote-nom">🇵🇱 KOWALSKI Piotr</div></td>
+              <td><span class="badge-cat badge-debutant">Débutant</span></td>
+              <td><span class="chrono">01:23.092</span></td>
+              <td style="font-family: Impact, sans-serif; font-size: 1.1rem; color: var(--blanc);">38</td>
+              <td style="color: var(--gris); font-family: monospace;">12</td>
+              <td style="color: var(--gris);">K1</td>
+            </tr>
+
+            <tr>
+              <td><span class="rang">16</span></td>
+              <td><div class="pilote-nom">🇦🇷 MESSI Leandro</div></td>
+              <td><span class="badge-cat badge-junior">Junior</span></td>
+              <td><span class="chrono">01:23.702</span></td>
+              <td style="font-family: Impact, sans-serif; font-size: 1.1rem; color: var(--blanc);">37</td>
+              <td style="color: var(--gris); font-family: monospace;">19</td>
+              <td style="color: var(--gris);">K16</td>
+            </tr>
+
+            <tr>
+              <td><span class="rang">17</span></td>
+              <td><div class="pilote-nom">🇯🇵 NAKAMURA Yuki</div></td>
+              <td><span class="badge-cat badge-senior">Senior</span></td>
+              <td><span class="chrono">01:23.780</span></td>
+              <td style="font-family: Impact, sans-serif; font-size: 1.1rem; color: var(--blanc);">33</td>
+              <td style="color: var(--gris); font-family: monospace;">35</td>
+              <td style="color: var(--gris);">K3</td>
+            </tr>
+
+            <tr>
+              <td><span class="rang">18</span></td>
+              <td><div class="pilote-nom">🇳🇬 OKONKWO Chidi</div></td>
+              <td><span class="badge-cat badge-debutant">Débutant</span></td>
+              <td><span class="chrono">01:24.234</span></td>
+              <td style="font-family: Impact, sans-serif; font-size: 1.1rem; color: var(--blanc);">30</td>
+              <td style="color: var(--gris); font-family: monospace;">9</td>
+              <td style="color: var(--gris);">K7</td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin-top: 14px; font-size: 0.75rem; color: var(--gris); font-family: monospace;">
+        ⚡ = Record du saison | Points calculés selon les temps et le nombre de sessions | Mis à jour chaque lundi
+      </p>
+    </section>
+
+    <!--REJOINDRE LE CLASSEMENT-->
+    <section class="section-fond-2">
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 24px;">
+        <div>
+          <span class="label-section">Votre tour</span>
+          <h2 class="titre-section" style="margin-top: 10px;">Entrez dans<br>le <span class="rouge">classement</span></h2>
+          <p style="color: var(--gris-clair); margin-top: 14px; max-width: 500px; line-height: 1.8; font-size: 0.95rem;">
+            Réservez une session Race Day pour intégrer le classement officiel de la saison 2026.
+            Votre meilleur chrono sera enregistré et vous recevrez votre classement par email.
+          </p>
+        </div>
+        <div style="text-align: center;">
+          <a href="reserver.html" class="btn btn-rouge" style="display: inline-block; margin-bottom: 12px; font-size: 1.1rem;">Réserver un Race Day →</a>
+          <p style="font-size: 0.8rem; color: var(--gris);">45DT / session · Classement officiel inclus</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="bande-cta">
+      <h2>BATTEZ LE RECORD : 01:14.443</h2>
+      <p>Pensez-vous pouvoir faire mieux que MARTIN Lucas ? La piste vous attend.</p>
+      <a href="reserver.html" class="btn-blanc">RELEVER LE DÉFI ▶</a>
+    </div>
+    <a href="#top" class="scroll-top">↑</a>
+
+  </main>
+
+  <footer>
+    <div class="footer-grille">
+      <div class="footer-col large">
+        <span class="footer-logo">APEX <span>KART</span></span>
+        <p class="footer-desc">Circuit de karting professionnel. 1580 mètres d'asphalte et des sensations garanties.</p>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-titre">Navigation</span>
+        <ul class="footer-liens">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="apropos.html">À Propos</a></li>
+          <li><a href="piste.html">La Piste</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="classements.html">Classements</a></li>
+          <li><a href="galerie.html">Galerie</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-titre">Contact</span>
+        <ul class="footer-liens">
+          <li><a href="tel:+21671440300">📞 +216 71 440 300</a></li>
+          <li><a href="mailto:contact@apexkart.tn">✉️ contact@apexkart.tn</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-titre">Réserver</span>
+        <ul class="footer-liens">
+          <li><a href="reserver.html" style="color: var(--rouge);">→ Réservation en ligne</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bas">
+      <span>© 2026 APEX KART. Tous droits réservés.</span>
+      <span>apexkart.tn</span>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>

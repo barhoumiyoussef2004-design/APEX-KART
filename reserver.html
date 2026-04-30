@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Réserver — Apex Kart</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo">
+      <span class="logo-point"></span>
+      APEX <span>KART</span>
+    </a>
+    <nav>
+      <a href="index.html">Accueil</a>
+      <a href="apropos.html">À Propos</a>
+      <a href="piste.html">La Piste</a>
+      <a href="services.html">Services</a>
+      <a href="classements.html">Classements</a>
+      <a href="galerie.html">Galerie</a>
+      <a href="contact.html">Contact</a>
+      <a href="reserver.html" class="nav-cta actif">Réserver ▶</a>
+    </nav>
+  </header>
+
+  <main>
+    <div id="top"></div>
+
+    <div class="page-header">
+      <div class="page-header-contenu">
+        <span class="label-section" style="margin-bottom: 14px;">Réservation</span>
+        <h1>RÉSERVEZ VOTRE<br><span>SESSION DE COURSE</span></h1>
+        <p>Remplissez le formulaire ci-dessous pour réserver votre place sur la piste</p>
+      </div>
+    </div>
+
+    <section class="section-fond-2">
+      <div class="grille-2">
+
+        <!-- Formulaire de réservation -->
+        <div>
+          <span class="label-section">Formulaire de réservation</span>
+          <h2 class="titre-section" style="margin-top: 1rem; margin-bottom: 2rem;">RÉSERVEZ <span class="rouge">MAINTENANT</span></h2>
+
+          <form class="formulaire-bloc" method="post" action="#">
+
+            <div class="form-groupe">
+              <label for="nom">Nom complet *</label>
+              <input type="text" id="nom" name="nom" placeholder="Jean Dupont" required>
+            </div>
+
+            <div class="form-groupe">
+              <label for="email">Adresse email *</label>
+              <input type="email" id="email" name="email" placeholder="jean@exemple.tn" required>
+            </div>
+
+            <div class="form-groupe">
+              <label for="telephone">Numéro de téléphone *</label>
+              <input type="tel" id="telephone" name="telephone" placeholder="+216 76 123 456" required>
+            </div>
+
+            <!-- Type de session — boutons radio -->
+            <div class="form-groupe">
+              <label>Type de session *</label>
+              <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem;">
+                <label class="choix-item">
+                  <input type="radio" name="session" value="enfants" required>
+                  <div>
+                    <div style="font-weight: 700; color: var(--blanc);">Session Enfants</div>
+                    <div style="font-size: 0.85rem; color: var(--gris);">Âges 8-12 ans — 25DT</div>
+                  </div>
+                </label>
+                <label class="choix-item">
+                  <input type="radio" name="session" value="adultes" checked required>
+                  <div>
+                    <div style="font-weight: 700; color: var(--blanc);">Session Adultes</div>
+                    <div style="font-size: 0.85rem; color: var(--gris);">Âges 13+ ans — 40DT</div>
+                  </div>
+                </label>
+                <label class="choix-item">
+                  <input type="radio" name="session" value="groupe" required>
+                  <div>
+                    <div style="font-weight: 700; color: var(--blanc);">Forfait Groupe</div>
+                    <div style="font-size: 0.85rem; color: var(--gris);">2+ personnes — 350DT</div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <div class="form-ligne">
+              <div class="form-groupe">
+                <label for="date">Date préférée *</label>
+                <input type="date" id="date" name="date" required>
+              </div>
+              <div class="form-groupe">
+                <label for="creneau">Créneau horaire *</label>
+                <select id="creneau" name="creneau" required>
+                  <option value="">— Choisissez un créneau —</option>
+                  <option value="10:00">10:00</option>
+                  <option value="11:00">11:00</option>
+                  <option value="12:00">12:00</option>
+                  <option value="13:00">13:00</option>
+                  <option value="14:00">14:00</option>
+                  <option value="15:00">15:00</option>
+                  <option value="16:00">16:00</option>
+                  <option value="17:00">17:00</option>
+                  <option value="18:00">18:00</option>
+                  <option value="19:00">19:00</option>
+                  <option value="20:00">20:00</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-groupe">
+              <label for="participants">Nombre de participants *</label>
+              <input type="number" id="participants" name="participants" min="1" max="20" value="1" required>
+            </div>
+
+            <!-- Services supplémentaires — cases à cocher -->
+            <div class="form-groupe">
+              <label>Services supplémentaires (optionnel)</label>
+              <div style="display: flex; flex-direction: column; gap: 0.8rem; margin-top: 0.5rem;">
+                <label class="choix-item">
+                  <input type="checkbox" name="video" value="video">
+                  Enregistrement vidéo (+15DT)
+                </label>
+                <label class="choix-item">
+                  <input type="checkbox" name="forfait" value="forfait">
+                  Forfait Multi-Courses (+170DT)
+                </label>
+                <label class="choix-item">
+                  <input type="checkbox" name="coaching" value="coaching">
+                  Coaching de course (+50DT)
+                </label>
+                <label class="choix-item">
+                  <input type="checkbox" name="catering" value="catering">
+                  Service de restauration (Sur mesure)
+                </label>
+                <label class="choix-item">
+                  <input type="checkbox" name="anniv" value="anniv">
+                  Anniversaire (+350DT)
+                </label>
+                <label class="choix-item">
+                  <input type="checkbox" name="event_entreprise" value="event_entreprise">
+                  Événement d'Entreprise (800DT+)
+                </label>
+                <label class="choix-item">
+                  <input type="checkbox" name="location" value="location">
+                  Location Piste Privée (500DT/heure)
+                </label>
+              </div>
+            </div>
+
+            <div class="form-groupe">
+              <label for="message">Demandes ou commentaires spéciaux</label>
+              <textarea id="message" name="message" placeholder="Des exigences particulières ou des questions ?"></textarea>
+            </div>
+
+            <div class="form-groupe">
+              <label class="choix-item">
+                <input type="checkbox" name="conditions" required>
+                J'accepte les
+                <a href="#" style="color: var(--vert-neon);">conditions générales</a>
+                et la
+                <a href="#" style="color: var(--vert-neon);">politique de confidentialité</a>
+              </label>
+            </div>
+
+            <button type="submit">SOUMETTRE LA RÉSERVATION ▶</button>
+
+            <p style="text-align: center; font-size: 0.85rem; color: var(--gris); margin-top: 1rem;">
+              * Champs obligatoires. Nous vous contacterons dans les 24 heures pour confirmer votre réservation.
+            </p>
+
+          </form>
+        </div>
+
+        <!-- Informations complémentaires -->
+        <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+
+          <div style="background: var(--noir-2); border: 1px solid var(--bord); border-top: 3px solid var(--vert-neon); padding: 2rem; border-radius: 8px;">
+            <span class="label-section" style="margin-bottom: 1.5rem;">Ce qu'il faut apporter</span>
+            <ul class="liste-regles">
+              <li><span>Pièce d'identité valide pour vérification de l'âge</span></li>
+              <li><span>Chaussures fermées (obligatoire)</span></li>
+              <li><span>Vêtements confortables</span></li>
+              <li><span>Les cheveux longs doivent être attachés</span></li>
+            </ul>
+          </div>
+
+          <div style="background: var(--noir-2); border: 1px solid var(--bord); border-top: 3px solid var(--cyan); padding: 2rem; border-radius: 8px;">
+            <span class="label-section" style="margin-bottom: 1.5rem;">Politique d'annulation</span>
+            <ul style="display: flex; flex-direction: column; gap: 0.8rem;">
+              <li style="display: flex; gap: 0.8rem; color: var(--gris-clair); line-height: 1.7;">
+                <span style="color: var(--vert-neon);">•</span>
+                <span>Annulation gratuite jusqu'à 48 heures</span>
+              </li>
+              <li style="display: flex; gap: 0.8rem; color: var(--gris-clair); line-height: 1.7;">
+                <span style="color: var(--vert-neon);">•</span>
+                <span>Remboursement de 50% entre 24-48 heures</span>
+              </li>
+              <li style="display: flex; gap: 0.8rem; color: var(--gris-clair); line-height: 1.7;">
+                <span style="color: var(--vert-neon);">•</span>
+                <span>Aucun remboursement dans les 24 heures</span>
+              </li>
+              <li style="display: flex; gap: 0.8rem; color: var(--gris-clair); line-height: 1.7;">
+                <span style="color: var(--vert-neon);">•</span>
+                <span>Reprogrammation gratuite à tout moment</span>
+              </li>
+            </ul>
+          </div>
+
+          <div style="background: var(--noir-2); border: 1px solid var(--bord); border-top: 3px solid var(--jaune); padding: 2rem; border-radius: 8px;">
+            <span class="label-section" style="margin-bottom: 1.5rem;">Conditions d'âge</span>
+            <ul style="display: flex; flex-direction: column; gap: 0.8rem;">
+              <li style="display: flex; gap: 0.8rem; color: var(--gris-clair); line-height: 1.7;">
+                <span style="color: var(--jaune);">•</span>
+                <span>Sessions enfants : 8-12 ans</span>
+              </li>
+              <li style="display: flex; gap: 0.8rem; color: var(--gris-clair); line-height: 1.7;">
+                <span style="color: var(--jaune);">•</span>
+                <span>Sessions adultes : 13+ ans</span>
+              </li>
+              <li style="display: flex; gap: 0.8rem; color: var(--gris-clair); line-height: 1.7;">
+                <span style="color: var(--jaune);">•</span>
+                <span>Taille minimale : 140 cm (4'7")</span>
+              </li>
+              <li style="display: flex; gap: 0.8rem; color: var(--gris-clair); line-height: 1.7;">
+                <span style="color: var(--jaune);">•</span>
+                <span>Autorisation parentale pour les -18 ans</span>
+              </li>
+            </ul>
+          </div>
+
+          <div style="background: var(--noir-2); border: 1px solid var(--bord); padding: 2rem; border-radius: 8px;">
+            <span class="label-section" style="margin-bottom: 1.5rem;">Consignes de sécurité</span>
+            <ul style="display: flex; flex-direction: column; gap: 0.8rem;">
+              <li style="display: flex; gap: 0.8rem; color: var(--gris-clair); line-height: 1.7;">
+                <span style="color: var(--vert-neon);">•</span>
+                <span>Briefing de sécurité obligatoire</span>
+              </li>
+              <li style="display: flex; gap: 0.8rem; color: var(--gris-clair); line-height: 1.7;">
+                <span style="color: var(--vert-neon);">•</span>
+                <span>Tout l'équipement fourni</span>
+              </li>
+              <li style="display: flex; gap: 0.8rem; color: var(--gris-clair); line-height: 1.7;">
+                <span style="color: var(--vert-neon);">•</span>
+                <span>Suivez les instructions des commissaires</span>
+              </li>
+              <li style="display: flex; gap: 0.8rem; color: var(--gris-clair); line-height: 1.7;">
+                <span style="color: var(--vert-neon);">•</span>
+                <span>Alcool et drogues interdits</span>
+              </li>
+            </ul>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <div class="bande-cta">
+      <h2>BESOIN D'AIDE ?</h2>
+      <p>Notre équipe est disponible pour répondre à toutes vos questions sur les réservations.</p>
+      <a href="contact.html" class="btn-blanc">CONTACTEZ-NOUS ▶</a>
+    </div>
+    <a href="#top" class="scroll-top">↑</a>
+
+  </main>
+
+  <footer>
+    <div class="footer-grille">
+      <div class="footer-col large">
+        <span class="footer-logo">APEX <span>KART</span></span>
+        <p class="footer-desc">Circuit de karting professionnel. 1580 mètres d'asphalte et des sensations garanties.</p>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-titre">Navigation</span>
+        <ul class="footer-liens">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="apropos.html">À Propos</a></li>
+          <li><a href="piste.html">La Piste</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="classements.html">Classements</a></li>
+          <li><a href="galerie.html">Galerie</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-titre">Contact</span>
+        <ul class="footer-liens">
+          <li><a href="tel:+21671440300">📞 +216 71 440 300</a></li>
+          <li><a href="mailto:contact@apexkart.tn">✉️ contact@apexkart.tn</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-titre">Réserver</span>
+        <ul class="footer-liens">
+          <li><a href="reserver.html" style="color: var(--vert-neon);">→ Réservation en ligne</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bas">
+      <span>© 2026 APEX KART. Tous droits réservés.</span>
+      <span>apexkart.tn</span>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

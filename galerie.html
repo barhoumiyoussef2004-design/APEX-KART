@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Galerie — Apex Kart</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo">
+      <span class="logo-point"></span>
+      APEX <span>KART</span>
+    </a>
+    <nav>
+      <a href="index.html">Accueil</a>
+      <a href="apropos.html">À Propos</a>
+      <a href="piste.html">La Piste</a>
+      <a href="services.html">Services</a>
+      <a href="classements.html">Classements</a>
+      <a href="galerie.html" class="actif">Galerie</a>
+      <a href="contact.html">Contact</a>
+      <a href="reserver.html" class="nav-cta">Réserver ▶</a>
+    </nav>
+  </header>
+
+  <main>
+    <div id="top"></div>
+
+    <div class="page-header">
+      <div class="page-header-contenu">
+        <span class="label-section" style="margin-bottom: 14px;">Moments capturés</span>
+        <h1>NOTRE <span>GALERIE</span></h1>
+        <p>Revivez les meilleurs moments sur la piste Apex Kart en images et vidéos.</p>
+      </div>
+    </div>
+
+    <!--GALERIE AVEC FILTRES-->
+    <section>
+
+      <!-- Radios cachés pour les filtres -->
+       <!--bouton radio =>un seul choix possible-->
+      <input class="filter-radio" type="radio" name="filtre" id="f-all" checked><!--checked → sélectionné par défaut-->
+      <input class="filter-radio" type="radio" name="filtre" id="f-circuit"><!--name="filtre" => tous les radios appartiennent au même groupe => un seul actif à la fois-->
+      <input class="filter-radio" type="radio" name="filtre" id="f-course">
+      <input class="filter-radio" type="radio" name="filtre" id="f-karts">
+      <input class="filter-radio" type="radio" name="filtre" id="f-evenement">
+      <input class="filter-radio" type="radio" name="filtre" id="f-podium">
+
+      <!-- Barre de filtres -->
+      <div class="filter-bar">
+        <label for="f-all"       class="filter-btn">Tout</label>
+        <label for="f-circuit"   class="filter-btn">Le Circuit</label>
+        <label for="f-course"    class="filter-btn">En Course</label>
+        <label for="f-karts"     class="filter-btn">Les Karts</label>
+        <label for="f-evenement" class="filter-btn">Événements</label>
+        <label for="f-podium"    class="filter-btn">Podium</label>
+      </div>
+
+      <!-- Grille masonry -->
+      <div class="galerie-grid">
+
+        <div class="galerie-item" data-category="course">
+          <a href="#lb-1" title="Ouvrir en grand"><!--quand on clique sur l'image le navigateur 
+            va faire défiler la page jusqu’à l’élément dont l’ID est lb-1 (<div class="lightbox" id="lb-1">)
+            et execute le css de lightbox(met l'image en focus)-->
+            <img src="media/gal.jpg"
+                 alt="Course en action"
+                 style="height: 260px; object-fit: cover;">
+            <div class="overlay"><span class="overlay-label">En Course</span></div>
+          </a>
+        </div>
+
+        <div class="galerie-item" data-category="circuit">
+          <a href="#lb-2" title="Ouvrir en grand">
+            <img src="media/Vue aérienne de la piste.jpg"
+                 alt="Vue du circuit">
+            <div class="overlay"><span class="overlay-label">Le Circuit</span></div>
+          </a>
+        </div>
+
+        <div class="galerie-item" data-category="karts">
+          <a href="#lb-3" title="Ouvrir en grand">
+            <img src="media/gal1.jpg"
+                 alt="Kart de près"
+                 style="height: 220px; object-fit: cover;">
+            <div class="overlay"><span class="overlay-label">Les Karts</span></div>
+          </a>
+        </div>
+
+        <div class="galerie-item" data-category="podium">
+          <a href="#lb-4" title="Ouvrir en grand">
+            <img src="media/galpod.jpg"
+                 alt="Podium"
+                 style="height: 240px; object-fit: cover;">
+            <div class="overlay"><span class="overlay-label">Podium</span></div>
+          </a>
+        </div>
+
+        <div class="galerie-item" data-category="evenement">
+          <a href="#lb-5" title="Ouvrir en grand">
+            <img src="media/gal3.jpg"
+                 alt="Événement groupe">
+            <div class="overlay"><span class="overlay-label">Événements</span></div>
+          </a>
+        </div>
+
+        <div class="galerie-item" data-category="course">
+          <a href="#lb-6" title="Ouvrir en grand">
+            <img src="media/gal9.jpg"
+                 alt="Départ de course"
+                 style="height: 200px; object-fit: cover;">
+            <div class="overlay"><span class="overlay-label">En Course</span></div>
+          </a>
+        </div>
+
+        <div class="galerie-item" data-category="circuit">
+          <a href="#lb-7" title="Ouvrir en grand">
+            <img src="media/gal2piste.jpg"
+                 alt="Stands du circuit">
+            <div class="overlay"><span class="overlay-label">Le Circuit</span></div>
+          </a>
+        </div>
+
+        <div class="galerie-item" data-category="karts">
+          <a href="#lb-8" title="Ouvrir en grand">
+            <img src="media/imapropos1.jpg"
+                 alt="Flotte de karts"
+                 style="height: 230px; object-fit: cover;">
+            <div class="overlay"><span class="overlay-label">Les Karts</span></div>
+          </a>
+        </div>
+
+        <div class="galerie-item" data-category="evenement">
+          <a href="#lb-9" title="Ouvrir en grand">
+            <img src="media/virage.jpg"
+                 alt="Virage serré">
+            <div class="overlay"><span class="overlay-label">Événements</span></div>
+          </a>
+        </div>
+
+        <div class="galerie-item" data-category="course">
+          <a href="#lb-10" title="Ouvrir en grand">
+            <img src="media/gal5.jpg"
+                 alt="Team building">
+            <div class="overlay"><span class="overlay-label">En Course</span></div>
+          </a>
+        </div>
+
+        <div class="galerie-item" data-category="podium">
+          <a href="#lb-11" title="Ouvrir en grand">
+            <img src="media/galpod2.jpg"
+                 alt="Trophées"
+                 style="height: 210px; object-fit: cover;">
+            <div class="overlay"><span class="overlay-label">Podium</span></div>
+          </a>
+        </div>
+
+        <div class="galerie-item" data-category="circuit">
+          <a href="#lb-12" title="Ouvrir en grand">
+            <img src="media/Session nocturne.jpg"
+                 alt="Session nocturne">
+            <div class="overlay"><span class="overlay-label">Le Circuit</span></div>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!--LIGHTBOXES-->
+    <div class="lightbox" id="lb-1">
+      <a href="#" class="lightbox-close">✕</a><!--# est une ancre.Il pointe vers le haut de la page actuelle. 
+      Ainsi, lorsque l'on clique sur ✕ :La page défile vers le haut-->
+      <img src="media/gal.jpg" alt="Course en action">
+      <span class="lightbox-caption">Course en action</span>
+    </div>
+    <div class="lightbox" id="lb-2">
+      <a href="#" class="lightbox-close">✕</a>
+      <img src="media/Vue aérienne de la piste.jpg" alt="Vue du circuit">
+      <span class="lightbox-caption">Vue du circuit</span>
+    </div>
+    <div class="lightbox" id="lb-3">
+      <a href="#" class="lightbox-close">✕</a>
+      <img src="media/gal1.jpg" alt="Kart de près">
+      <span class="lightbox-caption">Kart de près</span>
+    </div>
+    <div class="lightbox" id="lb-4">
+      <a href="#" class="lightbox-close">✕</a>
+      <img src="media/galpod.jpg" alt="Podium">
+      <span class="lightbox-caption">Podium</span>
+    </div>
+    <div class="lightbox" id="lb-5">
+      <a href="#" class="lightbox-close">✕</a>
+      <img src="media/gal3.jpg" alt="Événement groupe">
+      <span class="lightbox-caption">Événement groupe</span>
+    </div>
+    <div class="lightbox" id="lb-6">
+      <a href="#" class="lightbox-close">✕</a>
+      <img src="media/gal9.jpg" alt="Départ de course">
+      <span class="lightbox-caption">Départ de course</span>
+    </div>
+    <div class="lightbox" id="lb-7">
+      <a href="#" class="lightbox-close">✕</a>
+      <img src="media/gal2piste.jpg" alt="Stands du circuit">
+      <span class="lightbox-caption">Stands du circuit</span>
+    </div>
+    <div class="lightbox" id="lb-8">
+      <a href="#" class="lightbox-close">✕</a>
+      <img src="media/imapropos1.jpg" alt="Flotte de karts">
+      <span class="lightbox-caption">Flotte de karts</span>
+    </div>
+    <div class="lightbox" id="lb-9">
+      <a href="#" class="lightbox-close">✕</a>
+      <img src="media/virage.jpg" alt="Team building">
+      <span class="lightbox-caption">Team building</span>
+    </div>
+    <div class="lightbox" id="lb-10">
+      <a href="#" class="lightbox-close">✕</a>
+      <img src="media/gal5.jpg" alt="Virage serré">
+      <span class="lightbox-caption">Virage serré</span>
+    </div>
+    <div class="lightbox" id="lb-11">
+      <a href="#" class="lightbox-close">✕</a>
+      <img src="media/galpod2.jpg" alt="Trophées">
+      <span class="lightbox-caption">Trophées</span>
+    </div>
+    <div class="lightbox" id="lb-12">
+      <a href="#" class="lightbox-close">✕</a>
+      <img src="media/Session nocturne.jpg" alt="Session nocturne">
+      <span class="lightbox-caption">Session nocturne</span>
+    </div>
+
+    <!--SECTION VIDÉOS-->
+    <section class="section-fond-2">
+      <div class="en-tete-section centre">
+        <span class="label-section">En mouvement</span>
+        <h2 class="titre-section">NOS <span class="rouge">VIDÉOS</span></h2>
+      </div>
+
+      <div class="grille-2">
+
+        <div>
+          <div class="media-bloc">
+            <video controls poster="media/preview.png" style="width: 100%;">
+              <source src="media/onboard.mp4" type="video/mp4">
+              <p style="padding: 20px; color: var(--gris); text-align: center;">
+                Votre navigateur ne supporte pas la vidéo.
+              </p>
+            </video>
+            <div class="media-titre">Tour de référence — Record 1:10.381</div>
+          </div>
+        </div>
+
+        <div>
+          <div class="media-bloc">
+            <video controls poster="media/poster.png" style="width: 100%;">
+              <source src="media/Flying Lap.mp4" type="video/mp4">
+              <p style="padding: 20px; color: var(--gris); text-align: center;">
+                Votre navigateur ne supporte pas la vidéo.
+              </p>
+            </video>
+            <div class="media-titre">Championnat interne — Groupe Corporate</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!--SECTION AUDIO-->
+    <section>
+      <div class="en-tete-section centre">
+        <span class="label-section">Ambiance sonore</span>
+        <h2 class="titre-section">L'ATMOSPHÈRE DU <span class="rouge">CIRCUIT</span></h2>
+      </div>
+
+      <div style="max-width: 750px; margin: 0 auto;">
+        <div class="media-bloc" style="padding: 2rem;">
+          <p style="font-size: 0.8rem; color: var(--gris); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 1rem;">
+            🎧 Ambiance circuit — Sons de moteurs
+          </p>
+          <audio controls style="width: 100%;">
+            <source src="media/Ambiance circuit — Sons de moteurs.mp3" type="audio/mpeg">
+            Votre navigateur ne supporte pas la balise audio.
+          </audio>
+          <p style="margin-top: 1rem; color: var(--gris-clair); font-size: 0.9rem; line-height: 1.7;">
+            Plongez dans l'ambiance du circuit Apex Kart — moteurs qui rugissent,
+            pneus qui crissent, et l'excitation du drapeau vert.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="bande-cta">
+      <h2>PRÊT À CRÉER VOS PROPRES SOUVENIRS ?</h2>
+      <p>Réservez votre session et vivez l'expérience Apex Kart en vrai !</p>
+      <a href="reserver.html" class="btn-blanc">RÉSERVER MAINTENANT ▶</a>
+    </div>
+    <a href="#top" class="scroll-top">↑</a>
+
+  </main>
+
+  <footer>
+    <div class="footer-grille">
+      <div class="footer-col large">
+        <span class="footer-logo">APEX <span>KART</span></span>
+        <p class="footer-desc">Circuit de karting professionnel. Sessions loisir, compétition et événements pour tous les niveaux.</p>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-titre">Navigation</span>
+        <ul class="footer-liens">
+          <li><a href="index.html">Accueil</a></li>
+          <li><a href="apropos.html">À Propos</a></li>
+          <li><a href="piste.html">La Piste</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="classements.html">Classements</a></li>
+          <li><a href="galerie.html">Galerie</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-titre">Contact</span>
+        <ul class="footer-liens">
+          <li><a href="tel:+21671440300">📞 +216 71 440 300</a></li>
+          <li><a href="mailto:contact@apexkart.tn">✉️ contact@apexkart.tn</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <span class="footer-col-titre">Réserver</span>
+        <ul class="footer-liens">
+          <li><a href="reserver.html" style="color: var(--vert-neon);">→ Réservation en ligne</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bas">
+      <span>© 2026 APEX KART. Tous droits réservés.</span>
+      <span>apexkart.tn</span>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+
+</body>
+</html>
