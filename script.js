@@ -437,101 +437,10 @@ function initialiserFormulaireContact() {
     sauvegarderFormulaire(formulaire, 'contact');
   }, 3000);
 
-  // Événement onSubmit
   formulaire.onsubmit = function(event) {
-    event.preventDefault();
-    console.log('Soumission du formulaire contact');
-
-    var valide = true;
-    var prenom = document.getElementById('prenom');
-    var nom = document.getElementById('nom');
-    var email = document.getElementById('email');
-    var telephone = document.getElementById('telephone');
-    var message = document.getElementById('message');
-    var rgpd = document.querySelector('input[name="rgpd"]');
-
-    console.log('Validation en cours...');
-
-    if (!prenom || prenom.value.trim() === '') {
-      afficherErreur(prenom, 'Le prénom est obligatoire');
-      valide = false;
-    } else {
-      effacerErreur(prenom);
-    }
-
-    if (!nom || nom.value.trim() === '') {
-      afficherErreur(nom, 'Le nom est obligatoire');
-      valide = false;
-    } else {
-      effacerErreur(nom);
-    }
-
-    if (!email || email.value.trim() === '') {
-      afficherErreur(email, 'L\'adresse email est obligatoire');
-      valide = false;
-    } else if (!validerEmail(email.value)) {
-      afficherErreur(email, 'L\'adresse email n\'est pas valide');
-      valide = false;
-    } else {
-      effacerErreur(email);
-    }
-
-    if (telephone && telephone.value.trim() !== '' && !validerTelephone(telephone.value)) {
-      afficherErreur(telephone, 'Le numéro de téléphone n\'est pas valide');
-      valide = false;
-    } else if (telephone) {
-      effacerErreur(telephone);
-    }
-
-    if (!message || message.value.trim() === '') {
-      afficherErreur(message, 'Le message est obligatoire');
-      valide = false;
-    } else if (message.value.trim().length < 10) {
-      afficherErreur(message, 'Le message doit contenir au moins 10 caractères');
-      valide = false;
-    } else {
-      effacerErreur(message);
-    }
-
-    if (!rgpd || !rgpd.checked) {
-      afficherErreur(rgpd, 'Vous devez accepter la politique de confidentialité');
-      valide = false;
-    } else {
-      effacerErreur(rgpd);
-    }
-
-    console.log('Validation terminée. Valide:', valide);
-
-    if (valide) {
-      var sujet = document.getElementById('sujet');
-      var confirmation = window.confirm(
-        'Êtes-vous sûr de vouloir envoyer ce message ?\n\n' +
-        'Nom : ' + prenom.value + ' ' + nom.value + '\n' +
-        'Email : ' + email.value + '\n' +
-        'Sujet : ' + (sujet && sujet.value ? sujet.value : 'Non spécifié')
-      );
-
-      if (confirmation) {
-        alert('Merci ' + prenom.value + ' ! Votre message a été envoyé avec succès.\nNous vous répondrons dans les 24 heures.');
-        effacerSauvegarde('contact');
-        formulaire.reset();
-      }
-    } else {
-      alert('⚠ Veuillez corriger les erreurs dans le formulaire avant de soumettre.');
-    }
-
-    return false;
+    // Let the form submit directly to contact.php so PHP can handle it
+    return true;
   };
-
-  var elements = formulaire.elements;
-  for (var i = 0; i < elements.length; i++) {
-    elements[i].onchange = function() {
-      effacerErreur(this);
-    };
-    elements[i].oninput = function() {
-      effacerErreur(this);
-    };
-  }
 
   console.log('Formulaire contact initialisé avec succès');
 }
@@ -792,35 +701,7 @@ function initialiserFormulaireReservation() {
             principal: true,
             action: function() {
               fermerPopup(popupVerification);
-              
-              setTimeout(function() {
-                var contenuMerci = '<div style="text-align: center;">';
-                contenuMerci += '<div style="font-size: 4rem; margin-bottom: 1rem;">🏁</div>';
-                contenuMerci += '<p style="font-size: 1.2rem; color: #ddd; line-height: 1.8; margin-bottom: 1rem;">Merci <strong style="color: #00ff88;">' + nom.value + '</strong> pour votre réservation !</p>';
-                contenuMerci += '<p style="color: #999; line-height: 1.8;">Nous vous contacterons dans les <strong style="color: #00ff88;">24 heures</strong> pour confirmer tous les détails de votre session.</p>';
-                contenuMerci += '<div style="background: rgba(0, 255, 136, 0.1); padding: 1rem; border-radius: 8px; margin-top: 1.5rem; border-left: 4px solid #00ff88;">';
-                contenuMerci += '<p style="color: #00ff88; font-weight: 700; margin: 0;">🏎️ Préparez-vous à vivre une expérience inoubliable sur notre piste !</p>';
-                contenuMerci += '</div>';
-                contenuMerci += '<p style="color: #666; font-size: 0.85rem; margin-top: 1.5rem;">Un email de confirmation vous a été envoyé à <strong style="color: #00ff88;">' + email.value + '</strong></p>';
-                contenuMerci += '</div>';
-
-                var popupMerci = creerPopup(
-                  '✅ Réservation Confirmée',
-                  contenuMerci,
-                  [
-                    {
-                      texte: 'Fermer',
-                      principal: true,
-                      action: function() {
-                        fermerPopup(popupMerci);
-                        effacerSauvegarde('reservation');
-                        formulaire.reset();
-                        afficherPrixTotal();
-                      }
-                    }
-                  ]
-                );
-              }, 400);
+              formulaire.submit();
             }
           }
         ]
