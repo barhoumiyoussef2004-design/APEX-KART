@@ -38,6 +38,27 @@ try {
     echo "<p style='color:red;'>Erreur karts: " . $e->getMessage() . "</p>";
     $karts = array();
 }
+
+// Charger les créneaux déjà occupés (statut en_attente ou confirme)
+try {
+    $stmt = $pdo->query("SELECT date_session, heure_session FROM reservations WHERE statut IN ('en_attente', 'confirme')");
+    $creneauxRaw = $stmt->fetchAll();
+} catch (PDOException $e) {
+    $creneauxRaw = array();
+}
+
+// Organiser par date : tableau date => liste des heures occupées
+// Ex: $creneauxOccupes['2026-11-11'] = ['15:00', '16:00']
+$creneauxOccupes = array();
+for ($i = 0; $i < count($creneauxRaw); $i++) {
+    $dateOccupee = $creneauxRaw[$i]['date_session'];
+    // La base stocke '15:00:00' (TIME), on garde seulement 'HH:MM'
+    $heureOccupee = substr($creneauxRaw[$i]['heure_session'], 0, 5);
+    if (!isset($creneauxOccupes[$dateOccupee])) {
+        $creneauxOccupes[$dateOccupee] = array();
+    }
+    $creneauxOccupes[$dateOccupee][] = $heureOccupee;
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -133,7 +154,7 @@ try {
             <div class="form-ligne">
               <div class="form-groupe">
                 <label for="date">Date préférée *</label>
-                <input type="date" id="date" name="date" required>
+                <input type="date" id="date" name="date" required onchange="filtrerCreneaux()">
               </div>
               <div class="form-groupe">
                 <label for="creneau">Créneau horaire *</label>
@@ -239,6 +260,48 @@ try {
             
             // Initialiser
             checkKartLimits();
+            </script>
+
+            <!-- Restriction participants selon le type de session -->
+            <script>
+            function majParticipants() {
+                var radios = document.getElementsByName('session');
+                var participants = document.getElementById('participants');
+                var sessionChoisie = '';
+
+                // Trouver le radio actuellement coché
+                for (var i = 0; i < radios.length; i++) {
+                    if (radios[i].checked) {
+                        sessionChoisie = radios[i].value;
+                        break;
+                    }
+                }
+
+                if (sessionChoisie === 'adultes' || sessionChoisie === 'enfants') {
+                    // Session individuelle : 1 seul participant autorisé
+                    participants.value = 1;
+                    participants.max   = 1;
+                } else if (sessionChoisie === 'groupe') {
+                    // Forfait groupe : 10 participants maximum
+                    participants.max = 10;
+                    // Si la valeur dépasse déjà 10, la ramener à 10
+                    if (parseInt(participants.value) > 10) {
+                        participants.value = 10;
+                    }
+                }
+
+                // Mettre à jour la limite karts avec le nouveau nombre de participants
+                checkKartLimits();
+            }
+
+            // Attacher l'événement onchange à chaque radio de session
+            var radiosSession = document.getElementsByName('session');
+            for (var i = 0; i < radiosSession.length; i++) {
+                radiosSession[i].onchange = majParticipants;
+            }
+
+            // Appliquer dès le chargement selon le radio coché par défaut
+            majParticipants();
             </script>
 
             <!-- Instructeur will be added dynamically after coaching choice -->
@@ -452,5 +515,57 @@ try {
   </footer>
 
   <script src="script.js"></script>
+
+  <script>
+  // ==================== CRÉNEAUX OCCUPÉS ====================
+  // Données injectées depuis PHP : objet { 'YYYY-MM-DD': ['HH:MM', ...], ... }
+  var creneauxOccupesData = <?php echo json_encode($creneauxOccupes); ?>;
+
+  // Appelée quand l'utilisateur change la date
+  // Désactive les créneaux déjà pris pour ce jour, réactive les autres
+  function filtrerCreneaux() {
+      var dateVal = document.getElementById('date').value;
+      var select  = document.getElementById('creneau');
+      var options = select.options;
+
+      // Liste des heures occupées pour la date choisie (vide si aucune)
+      var occupes = creneauxOccupesData[dateVal] || [];
+
+      for (var i = 0; i < options.length; i++) {
+          var opt = options[i];
+
+          // Ignorer l'option placeholder "— Choisissez un créneau —"
+          if (opt.value === '') {
+              continue;
+          }
+
+          // Chercher si ce créneau est dans la liste des occupés
+          var estOccupe = false;
+          for (var j = 0; j < occupes.length; j++) {
+              if (occupes[j] === opt.value) {
+                  estOccupe = true;
+                  break;
+              }
+          }
+
+          if (estOccupe) {
+              // Griser et désactiver ce créneau
+              opt.disabled = true;
+              opt.style.color = '#555';
+              opt.text = opt.value + ' (Occupé)';
+          } else {
+              // Réactiver ce créneau
+              opt.disabled = false;
+              opt.style.color = '';
+              opt.text = opt.value; // Restaurer le texte d'origine
+          }
+      }
+
+      // Si le créneau actuellement sélectionné vient d'être désactivé, réinitialiser
+      if (select.selectedIndex > 0 && select.options[select.selectedIndex].disabled) {
+          select.value = '';
+      }
+  }
+  </script>
 </body>
 </html>

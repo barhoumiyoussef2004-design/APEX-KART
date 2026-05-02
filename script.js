@@ -749,6 +749,52 @@ function initialiserFormulaireReservation() {
     };
   }
 
+  // ================================================================
+  // RE-ATTACHER LES HANDLERS PERSONNALISÉS — doit être EN DERNIER
+  // ----------------------------------------------------------------
+  // La boucle ci-dessus ET la ligne "participants.onchange = afficherPrixTotal"
+  // (plus haut dans cette même fonction) ont écrasé les handlers définis
+  // par les scripts inline de reserver.php.
+  // En les réassignant ici, tout en bas, ils ne peuvent plus être écrasés.
+  // ================================================================
+
+  // 1. Radios session → majParticipants
+  //    (max=1 pour adultes/enfants, max=10 pour groupe)
+  var sessRadios = document.getElementsByName('session');
+  for (var sr = 0; sr < sessRadios.length; sr++) {
+    sessRadios[sr].onchange = majParticipants;
+  }
+
+  // 2. Champ participants → afficherPrixTotal + checkKartLimits
+  //    (les deux doivent tourner ensemble)
+  var partField = document.getElementById('participants');
+  if (partField) {
+    partField.onchange = function() {
+      afficherPrixTotal();
+      checkKartLimits();
+    };
+    partField.oninput = function() {
+      afficherPrixTotal();
+      checkKartLimits();
+    };
+  }
+
+  // 3. Inputs quantité karts → checkKartLimits
+  var kartFields = document.querySelectorAll('.kart-qty-input');
+  for (var kf = 0; kf < kartFields.length; kf++) {
+    kartFields[kf].oninput = checkKartLimits;
+  }
+
+  // 4. Champ date → filtrerCreneaux (masque les créneaux déjà pris)
+  var dateField = document.getElementById('date');
+  if (dateField) {
+    dateField.onchange = filtrerCreneaux;
+  }
+
+  // Appliquer l'état initial correct dès le chargement
+  majParticipants();
+  checkKartLimits();
+
   console.log('Formulaire réservation initialisé avec succès');
 }
 

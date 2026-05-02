@@ -243,7 +243,7 @@ $couleursStatut = array(
             }
         };
         xhr.send();
-    }, 2000);
+    }, 3000);
     </script>
 </body>
 </html>

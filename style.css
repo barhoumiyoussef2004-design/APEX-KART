@@ -229,6 +229,8 @@ h3 {
   font-size: 1rem;
   max-width: 700px;
   line-height: 1.8;
+  margin: 0 auto; /* this centers the block */
+  text-align: center; /* text centering */
 }
 
 /*HERO SECTION*/

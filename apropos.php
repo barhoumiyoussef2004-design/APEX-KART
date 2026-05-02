@@ -250,7 +250,7 @@ try {
         </div>
 
         <div class="stat-cell" style="flex: 1; min-width: 180px; background: var(--noir-2); padding: 36px; text-align: center;">
-          <span class="stat-number" data-count="25" style="display: block; font-family: Impact, sans-serif; font-size: 3.5rem; font-weight: 900; color: var(--vert-neon); line-height: 1;">25</span>
+          <span class="stat-number" data-count="22" style="display: block; font-family: Impact, sans-serif; font-size: 3.5rem; font-weight: 900; color: var(--vert-neon); line-height: 1;">22</span>
           <span style="display: block; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gris); margin-top: 6px;">Karts professionnels</span>
         </div>
 
