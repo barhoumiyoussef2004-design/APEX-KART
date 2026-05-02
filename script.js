@@ -86,7 +86,7 @@ function creerPopup(titre, contenu, boutons) {
   
   // Créer le popup
   var popup = document.createElement('div');
-  popup.style.cssText = 'background: #1a1a1a; border: 2px solid #00ff88; border-radius: 12px; padding: 2rem; max-width: 500px; width: 90%; box-shadow: 0 20px 60px rgba(0, 255, 136, 0.3); animation: slideIn 0.3s ease;';
+  popup.style.cssText = 'background: #1a1a1a; border: 2px solid #00ff88; border-radius: 12px; padding: 2rem; max-width: 500px; width: 90%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0, 255, 136, 0.3); animation: slideIn 0.3s ease;';
   
   // Titre
   var titreElement = document.createElement('h3');
@@ -437,8 +437,13 @@ function initialiserFormulaireContact() {
     sauvegarderFormulaire(formulaire, 'contact');
   }, 3000);
 
+  // Clear localStorage when exiting the page
+  window.addEventListener('beforeunload', function() {
+    effacerSauvegarde('contact');
+  });
+
   formulaire.onsubmit = function(event) {
-    // Let the form submit directly to contact.php so PHP can handle it
+    effacerSauvegarde('contact'); // Clear form data before submitting
     return true;
   };
 
@@ -478,6 +483,26 @@ function initialiserFormulaireReservation() {
   setInterval(function() {
     sauvegarderFormulaire(formulaire, 'reservation');
   }, 3000);
+
+  // Clear localStorage when exiting the page
+  window.addEventListener('beforeunload', function() {
+    effacerSauvegarde('reservation');
+  });
+
+  // Show/hide instructor based on coaching checkbox
+  var coachingCheckbox = document.querySelector('input[name="coaching"]');
+  var instructeurGroup = document.getElementById('instructeur-group');
+  if (coachingCheckbox && instructeurGroup) {
+    coachingCheckbox.addEventListener('change', function() {
+      if (this.checked) {
+        instructeurGroup.style.display = 'block';
+      } else {
+        instructeurGroup.style.display = 'none';
+        var instrSelect = document.getElementById('instructeur');
+        if (instrSelect) instrSelect.value = '0';
+      }
+    });
+  }
 
   function calculerPrixTotal() {
     var prixTotal = 0;
@@ -697,13 +722,14 @@ function initialiserFormulaireReservation() {
             }
           },
           {
-            texte: '✓ Vérifier et Confirmer',
-            principal: true,
-            action: function() {
-              fermerPopup(popupVerification);
-              formulaire.submit();
-            }
-          }
+             texte: '✓ Vérifier et Confirmer',
+             principal: true,
+             action: function() {
+               fermerPopup(popupVerification);
+               effacerSauvegarde('reservation');
+               formulaire.submit();
+             }
+           }
         ]
       );
     } else {

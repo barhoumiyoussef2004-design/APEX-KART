@@ -200,18 +200,29 @@ try {
             var warningMsg = document.getElementById('kart-warning');
 
             function checkKartLimits() {
-                var max = parseInt(participantsInput.value);
+                var max = parseInt(participantsInput.value) || 1;
                 maxKartsLabel.textContent = max;
                 
                 var totalSelected = 0;
                 for (var i = 0; i < qtyInputs.length; i++) {
-                    totalSelected = totalSelected + parseInt(qtyInputs[i].value);
+                    totalSelected = totalSelected + (parseInt(qtyInputs[i].value) || 0);
                 }
 
                 if (totalSelected > max) {
                     warningMsg.style.display = 'block';
                 } else {
                     warningMsg.style.display = 'none';
+                }
+
+                // Disable/enable kart inputs when totalSelected >= max
+                for (var j = 0; j < qtyInputs.length; j++) {
+                    if (totalSelected >= max && (parseInt(qtyInputs[j].value) || 0) === 0) {
+                        qtyInputs[j].disabled = true;
+                        qtyInputs[j].style.opacity = '0.4';
+                    } else {
+                        qtyInputs[j].disabled = false;
+                        qtyInputs[j].style.opacity = '1';
+                    }
                 }
             }
 
@@ -224,26 +235,13 @@ try {
 
             // Écouter les changements sur le nombre de participants
             participantsInput.onchange = checkKartLimits;
+            participantsInput.oninput = checkKartLimits;
             
             // Initialiser
             checkKartLimits();
             </script>
 
-            <!-- Choix de l'Instructeur (affiché dynamiquement depuis la base) -->
-            <div class="form-groupe">
-              <label for="instructeur">Instructeur préféré (optionnel)</label>
-              <select id="instructeur" name="instructeur">
-                <option value="">— Aucun / Pas de coaching —</option>
-                <?php
-                // Parcourir les instructeurs
-                for ($i = 0; $i < count($instructeurs); $i++) {
-                    echo '<option value="' . $instructeurs[$i]['id'] . '">';
-                    echo htmlspecialchars($instructeurs[$i]['nom']) . ' — ' . htmlspecialchars($instructeurs[$i]['specialite']);
-                    echo '</option>';
-                }
-                ?>
-              </select>
-            </div>
+            <!-- Instructeur will be added dynamically after coaching choice -->
 
             <!-- Services supplémentaires — chargés depuis la base de données -->
             <div class="form-groupe">
@@ -280,12 +278,12 @@ try {
               </div>
             </div>
 
-            <!-- Instructeur optionnel (si coaching choisi) -->
+            <!-- Instructeur (affiché seulement si Coaching de course est coché) -->
             <?php if (count($instructeurs) > 0) { ?>
-            <div class="form-groupe">
+            <div class="form-groupe" id="instructeur-group" style="display: none;">
               <label for="instructeur">Instructeur préféré (optionnel)</label>
               <select id="instructeur" name="instructeur">
-                <option value="">— Aucun / Pas de coaching —</option>
+                <option value="0">— pas de préférance —</option>
                 <?php
                 for ($i = 0; $i < count($instructeurs); $i++) {
                     echo '<option value="' . $instructeurs[$i]['id'] . '">' . htmlspecialchars($instructeurs[$i]['nom']) . ' — ' . htmlspecialchars($instructeurs[$i]['specialite']) . '</option>';

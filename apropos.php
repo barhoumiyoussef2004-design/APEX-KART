@@ -164,7 +164,7 @@ try {
       <div class="en-tete-section centre">
         <span class="label-section">Notre flotte</span>
         <h2 class="titre-section">NOS <span class="rouge">KARTS</span></h2>
-        <p class="sous-titre-section">Une flotte moderne et entretenue pour tous les niveaux.</p>
+        <p class="sous-titre-section" style="text-align: center;">Une flotte moderne et entretenue pour tous les niveaux.</p>
       </div>
 
       <?php if (count($karts) > 0) { ?>

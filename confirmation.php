@@ -17,7 +17,7 @@ $id = $_GET['id'];
 // Récupérer la réservation avec JOIN sur pilotes et reservation_services
 try {
     // SELECT avec JOIN pour avoir toutes les infos
-    $sql = "SELECT r.id, r.date_session, r.heure_session, r.statut,
+    $sql = "SELECT r.id, r.date_session, r.heure_session, r.statut, r.prix_total,
                    p.nom_complet, p.email, p.telephone
             FROM reservations r
             JOIN pilotes p ON r.id_pilote = p.id
@@ -42,12 +42,6 @@ try {
     $stmtServices = $pdo->prepare($sqlServices);
     $stmtServices->execute(array(':id' => $id));
     $services = $stmtServices->fetchAll();
-    
-    // Calculer le prix total
-    $prixTotal = 0;
-    for ($i = 0; $i < count($services); $i++) {
-        $prixTotal = $prixTotal + ($services[$i]['prix'] * $services[$i]['quantite']);
-    }
     
 } catch (PDOException $e) {
     echo "Erreur : " . $e->getMessage();
@@ -166,7 +160,7 @@ $couleursStatut = array(
                     <!-- Prix total -->
                     <div style="background: rgba(0,255,136,0.1); border: 2px solid var(--vert-neon); padding: 1.5rem; border-radius: 8px; text-align: center; margin-bottom: 2rem;">
                         <div style="color: var(--vert-neon); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px;">PRIX TOTAL</div>
-                        <div style="color: var(--blanc); font-size: 2.5rem; font-family: Impact, sans-serif;"><?php echo $prixTotal; ?> DT</div>
+                        <div style="color: var(--blanc); font-size: 2.5rem; font-family: Impact, sans-serif;"><?php echo $reservation['prix_total']; ?> DT</div>
                     </div>
 
                     <!-- Numéro de réservation -->
@@ -233,5 +227,23 @@ $couleursStatut = array(
     </footer>
 
     <script src="script.js"></script>
+    <script>
+    // Auto-confirmer la réservation après 2 secondes
+    setTimeout(function() {
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'auto_confirmer.php?id=<?php echo $reservation['id']; ?>', true);
+        xhr.onload = function() {
+            if (xhr.responseText === 'OK') {
+                console.log('Réservation auto-confirmée après 2 secondes');
+                var statutElement = document.querySelector('[style*="color: var(--jaune)"]');
+                if (statutElement) {
+                    statutElement.style.color = 'var(--vert-neon)';
+                    statutElement.textContent = 'Confirmée ✅';
+                }
+            }
+        };
+        xhr.send();
+    }, 2000);
+    </script>
 </body>
 </html>

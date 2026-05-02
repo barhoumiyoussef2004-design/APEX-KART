@@ -31,7 +31,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     // On sauvegarde le tout dans la colonne id_kart (format texte)
     $idKart = count($kartsChosen) > 0 ? implode(', ', $kartsChosen) : null;
-    $idInstructeur = isset($_POST['instructeur']) && $_POST['instructeur'] !== '' ? $_POST['instructeur'] : null;
+    $idInstructeur = isset($_POST['instructeur']) && $_POST['instructeur'] !== '' && $_POST['instructeur'] !== '0' ? $_POST['instructeur'] : null;
+    
+    // Si pas de préférance (0 ou vide), choisir le premier instructeur disponible
+    if ($idInstructeur === null) {
+        try {
+            $stmt = $pdo->query("SELECT id FROM instructeurs ORDER BY date_embauche ASC LIMIT 1");
+            $premierInstructeur = $stmt->fetch();
+            if ($premierInstructeur) {
+                $idInstructeur = $premierInstructeur['id'];
+            }
+        } catch (PDOException $e) {
+            $idInstructeur = null;
+        }
+    }
     
     // Récupérer les services supplémentaires cochés
     $servicesSelectionnes = array();
@@ -77,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // =============================================
         // ÉTAPE 2 : Insérer la réservation
         // =============================================
-        $stmt = $pdo->prepare("INSERT INTO reservations (id_pilote, date_session, heure_session, statut, id_kart, id_instructeur) VALUES (:idPilote, :date, :heure, 'en_attente', :kart, :instructeur)");
+        $stmt = $pdo->prepare("INSERT INTO reservations (id_pilote, date_session, heure_session, statut, id_kart, id_instructeur, prix_total) VALUES (:idPilote, :date, :heure, 'en_attente', :kart, :instructeur, 0)");
         $stmt->execute(array(
             ':idPilote' => $idPilote,
             ':date' => $date,
@@ -135,6 +148,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ));
             }
         }
+
+        // =============================================
+        // ÉTAPE 4 : Calculer et sauvegarder le prix total
+        // =============================================
+        $stmt = $pdo->prepare("SELECT SUM(s.prix * rs.quantite) as total FROM reservation_services rs JOIN services s ON rs.id_service = s.id WHERE rs.id_reservation = :idRes");
+        $stmt->execute(array(':idRes' => $idReservation));
+        $result = $stmt->fetch();
+        $prixTotal = $result['total'] ? $result['total'] : 0;
+
+        $stmt = $pdo->prepare("UPDATE reservations SET prix_total = :total WHERE id = :id");
+        $stmt->execute(array(':total' => $prixTotal, ':id' => $idReservation));
         
         // Rediriger vers la page de confirmation
         header('Location: confirmation.php?id=' . $idReservation);

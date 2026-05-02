@@ -223,16 +223,17 @@ CREATE TABLE `reservations` (
   `heure_session` time NOT NULL,
   `statut` enum('confirme','en_attente','annule') COLLATE utf8mb4_unicode_ci DEFAULT 'en_attente',
   `id_kart` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `id_instructeur` int DEFAULT NULL
+  `id_instructeur` int DEFAULT NULL,
+  `prix_total` decimal(10,2) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `reservations`
 --
 
-INSERT INTO `reservations` (`id`, `id_pilote`, `date_session`, `heure_session`, `statut`, `id_kart`, `id_instructeur`) VALUES
-(1, 5, '2026-11-11', '15:00:00', 'en_attente', NULL, NULL),
-(2, 5, '2026-11-11', '15:00:00', 'en_attente', 'Sodi Kart SR5 (x2), Sodi RSX (x2)', 1);
+INSERT INTO `reservations` (`id`, `id_pilote`, `date_session`, `heure_session`, `statut`, `id_kart`, `id_instructeur`, `prix_total`) VALUES
+(1, 5, '2026-11-11', '15:00:00', 'en_attente', NULL, NULL, 355.00),
+(2, 5, '2026-11-11', '15:00:00', 'en_attente', 'Sodi Kart SR5 (x2), Sodi RSX (x2)', 1, 395.00);
 
 -- --------------------------------------------------------
 
