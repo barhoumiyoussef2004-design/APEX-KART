@@ -1,31 +1,32 @@
 <?php
-// =============================================
-// APROPOS.PHP - À Propos (instructeurs depuis DB)
-// =============================================
 
-require_once 'config.php';
+require_once 'config.php';//Ce fichier contient la connexion à la base de données ($pdo)
+//=> on peut utiliser $pdo
 
 // Charger les instructeurs depuis la base de données
 try {
     $stmt = $pdo->query("SELECT nom, specialite, bio FROM instructeurs ORDER BY date_embauche DESC");
-    $instructeurs = $stmt->fetchAll();
+    $instructeurs = $stmt->fetchAll();//fetchAll() :Récupère tous les résultats sous forme de tableau
+    //fetch() :Returns only ONE row. Each call gets the next row
 } catch (PDOException $e) {
     $instructeurs = array();
 }
 
 // Charger les karts depuis la base de données
 try {
-    // Récupérer tous les karts sans GROUP BY pour éviter les erreurs SQL
+    // Récupérer tous les karts 
     $stmt = $pdo->query("SELECT * FROM karts ORDER BY numero_flotte ASC");
     $karts_raw = $stmt->fetchAll();
     
-    // Grouper manuellement en PHP
+    // On va regrouper les karts similaires (même modèle + type)
     $karts = array();
     for ($i = 0; $i < count($karts_raw); $i++) {
-        $cle = $karts_raw[$i]['modele'] . '|' . $karts_raw[$i]['type'];
-        if (isset($karts[$cle])) {
+        $cle = $karts_raw[$i]['modele'] . '|' . $karts_raw[$i]['type'];//Création d’une clé unique
+        //Exemple : SODI RX7 | adulte   => Permet d’identifier un groupe
+        if (isset($karts[$cle])) {   //isset() checks if a variable exists AND is not null
+        //ifthis key $cle already exists in the $karts array, then:
             $karts[$cle]['nb'] = $karts[$cle]['nb'] + 1;
-        } else {
+        } else {//on l'initialise
             $karts[$cle] = array(
                 'modele' => $karts_raw[$i]['modele'],
                 'type' => $karts_raw[$i]['type'],
@@ -35,13 +36,18 @@ try {
         }
     }
     $karts = array_values($karts);
+    //Avant: tableau associatif avec clés personnalisées (modele|type)
+    //Après: tableau simple indexé [0,1,2...]
+    //Plus facile à parcourir
     
-    // DEBUG: Affiche le nombre de karts trouvés
+    // DEBUG: Affiche le nombre de karts trouvés :
     // echo "<p style='color:red;'>Karts trouvés en base : " . count($karts_raw) . "</p>";
     
 } catch (PDOException $e) {
     // Affiche l'erreur directement sur la page pour débogage
     echo "<div style='color: red; background: #300; padding: 20px; margin: 20px;'>Erreur Base de Données: " . $e->getMessage() . "</div>";
+    //$e->getMessage() retourne le message d’erreur généré par PHP / MySQL
+    //exple: Erreur de connexion : SQLSTATE[HY000] [1045] Access denied for user 'apexkart'@'localhost'
     $karts = array();
 }
 ?>
@@ -167,17 +173,18 @@ try {
         <p class="sous-titre-section" style="text-align: center;">Une flotte moderne et entretenue pour tous les niveaux.</p>
       </div>
 
-      <?php if (count($karts) > 0) { ?>
+      <?php if (count($karts) > 0) { ?> <!--count($karts) :nombre d’éléments-->
       <div class="grille-3">
         <?php
         // Parcourir les karts groupés
         for ($i = 0; $i < count($karts); $i++) {
-            $count = $karts[$i]['nb'];
+            $count = $karts[$i]['nb'];//On récupère le nombre de karts (nb) dans ce groupe 
         ?>
+        <!--pour chaque group, il y a une carte:-->
         <div class="carte" style="text-align: center; padding: 2.5rem;">
           
           <h3 style="color: var(--vert-neon); margin-bottom: 1rem; font-size: 1.5rem; text-transform: uppercase;">
-            <?php echo htmlspecialchars($karts[$i]['modele']); ?>
+            <?php echo $karts[$i]['modele']; ?> <!--affiche le modèle de ce groupe-->
           </h3>
           
           <div style="background: rgba(255,255,255,0.05); padding: 0.8rem; border-radius: 8px; margin-bottom: 1.5rem;">
@@ -193,17 +200,18 @@ try {
 
           <p style="color: var(--gris); font-size: 0.9rem; margin: 0;">
             <?php echo $count; ?> kart<?php echo ($count > 1 ? 's' : ''); ?> encore disponible<?php echo ($count > 1 ? 's' : ''); ?>
+            <!--(condition ? valeur_si_vrai : valeur_si_faux)-->
           </p>
         </div>
-        <?php } ?>
+        <?php } ?><!--Ferme le for-->
       </div>
-      <?php } else { ?>
+      <?php } else { ?> <!--Si count($karts) == 0-->
         <p style="text-align: center; color: var(--gris);">Aucun kart enregistré pour le moment.</p>
-      <?php } ?>
+      <?php } ?>  <!--Ferme le if-->
     </section>
 
     <!--ÉQUIPE (instructeurs depuis la base de données)-->
-    <?php if (count($instructeurs) > 0) { ?>
+    <?php if (count($instructeurs) > 0) { ?> <!--count($instructeurs) :nombre d’instructeurs-->
     <section class="section-fond-2">
       <div class="en-tete-section centre">
         <span class="label-section">Notre équipe</span>
@@ -216,14 +224,16 @@ try {
         // Parcourir les instructeurs depuis la base de données
         for ($i = 0; $i < count($instructeurs); $i++) {
             $init = strtoupper(substr($instructeurs[$i]['nom'], 0, 1));
+            //substr(..., 0, 1): prend la première lettre
+            //strtoupper(...): met en majuscule
         ?>
         <div class="carte" style="text-align: center;">
           <div style="width: 80px; height: 80px; background: var(--rouge); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem; font-size: 2rem; font-family: Impact, sans-serif; color: var(--blanc);">
-            <?php echo $init; ?>
+            <?php echo $init; ?> <!--Affiche la lettre dans le cercle rouge-->
           </div>
-          <h3 style="color: var(--vert-neon);"><?php echo htmlspecialchars($instructeurs[$i]['nom']); ?></h3>
-          <p style="color: var(--jaune); font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;"><?php echo htmlspecialchars($instructeurs[$i]['specialite']); ?></p>
-          <p style="color: var(--gris-clair); font-size: 0.9rem; line-height: 1.7;"><?php echo htmlspecialchars($instructeurs[$i]['bio']); ?></p>
+          <h3 style="color: var(--vert-neon);"><?php echo $instructeurs[$i]['nom']; ?></h3>
+          <p style="color: var(--jaune); font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem;"><?php echo $instructeurs[$i]['specialite']; ?></p>
+          <p style="color: var(--gris-clair); font-size: 0.9rem; line-height: 1.7;"><?php echo $instructeurs[$i]['bio']; ?></p>
         </div>
         <?php } ?>
       </div>
@@ -241,6 +251,10 @@ try {
 
         <div class="stat-cell" style="flex: 1; min-width: 180px; background: var(--noir-2); padding: 36px; text-align: center;">
           <span class="stat-number" data-count="1580" style="display: block; font-family: Impact, sans-serif; font-size: 3.5rem; font-weight: 900; color: var(--vert-neon); line-height: 1;">1580</span>
+          <!-- <span class="stat-number" data-count="1580">1580</span>
+          contient 2 choses importantes :
+          *class="stat-number"  => Permet à JavaScript de sélectionner les compteurs
+          *data-count="1580"    => C’est la valeur cible finale: Le nombre vers lequel le compteur va animer-->
           <span style="display: block; font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gris); margin-top: 6px;">Mètres de piste</span>
         </div>
 

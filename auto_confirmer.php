@@ -1,7 +1,4 @@
 <?php
-// =============================================
-// AUTO_CONFIRMER.PHP - Confirmation automatique après 2s
-// =============================================
 
 require_once 'config.php';
 

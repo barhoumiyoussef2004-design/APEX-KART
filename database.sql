@@ -209,11 +209,11 @@ CREATE TABLE `reservation_services` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 INSERT INTO `reservation_services` (`id_reservation`, `id_service`, `quantite`) VALUES
-(1, 2, 3),
+(1, 2, 1),
 (1, 4, 1),
 (1, 5, 1),
 (1, 6, 1),
-(2, 2, 4),
+(2, 3, 4),
 (2, 4, 1),
 (2, 5, 1),
 (2, 6, 1);

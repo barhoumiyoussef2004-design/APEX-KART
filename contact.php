@@ -1,38 +1,36 @@
 <?php
-// =============================================
-// CONTACT.PHP - Contact (message sauvegardé en DB)
-// =============================================
 
 require_once 'config.php';
 
-$message = '';
+$message = ''; 
 $messageType = '';
 
 // Traiter la soumission du formulaire de contact
-if (isset($_POST['envoyer_message'])) {
-    $nomComplet = $_POST['prenom'] . ' ' . $_POST['nom'];
-    $email = $_POST['email'];
-    $telephone = isset($_POST['telephone']) ? $_POST['telephone'] : '';
-    $sujet = isset($_POST['sujet']) ? $_POST['sujet'] : '';
-    $msg = $_POST['message'];
+if (isset($_POST['envoyer_message'])) {//Vérifie si le bouton “envoyer” a été cliqué
+  //On récupère les champs:
+  $nomComplet = $_POST['prenom'] . ' ' . $_POST['nom'];
+  $email = $_POST['email'];
+  $telephone = isset($_POST['telephone']) ? $_POST['telephone'] : '';//optionnel => Si le champ n’existe pas :on met une chaîne vide ''
+  $sujet = isset($_POST['sujet']) ? $_POST['sujet'] : '';//optionnel
+  $msg = $_POST['message'];
 
-    try {
-        // INSERT du message dans la table messages
-        $stmt = $pdo->prepare("INSERT INTO messages (nom_complet, email, telephone, sujet, message) VALUES (:nom, :email, :tel, :sujet, :msg)");
-        $stmt->execute(array(
-            ':nom' => $nomComplet,
-            ':email' => $email,
-            ':tel' => $telephone,
-            ':sujet' => $sujet,
-            ':msg' => $msg
-        ));
+  try {
+    // INSERT du message dans la table messages
+    $stmt = $pdo->prepare("INSERT INTO messages (nom_complet, email, telephone, sujet, message) VALUES (:nom, :email, :tel, :sujet, :msg)");
+    $stmt->execute(array(
+      ':nom' => $nomComplet,
+      ':email' => $email,
+      ':tel' => $telephone,
+      ':sujet' => $sujet,
+      ':msg' => $msg
+    ));
 
-        $message = 'Merci ' . htmlspecialchars($_POST['prenom']) . ' ! Votre message a été envoyé avec succès. Nous vous répondrons dans les 24 heures.';
-        $messageType = 'succes';
-    } catch (PDOException $e) {
-        $message = 'Erreur lors de l\'envoi : ' . $e->getMessage();
-        $messageType = 'erreur';
-    }
+    $message = 'Merci ' . $_POST['prenom'] . ' ! Votre message a été envoyé avec succès. Nous vous répondrons dans les 24 heures.';
+    $messageType = 'succes';
+  } catch (PDOException $e) {
+    $message = 'Erreur lors de l\'envoi : ' . $e->getMessage();
+    $messageType = 'erreur';
+  }
 }
 ?>
 <!DOCTYPE html>

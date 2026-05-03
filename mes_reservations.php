@@ -1,9 +1,5 @@
 <?php
-// =============================================
-// MES_RESERVATIONS.PHP - Voir, modifier, annuler
-// =============================================
 
-// Inclure la connexion
 require_once 'config.php';
 
 $message = '';
@@ -16,14 +12,12 @@ if (isset($_GET['email'])) {
     $email = $_GET['email'];
 }
 
-// =============================================
 // TRAITER LA RECHERCHE PAR EMAIL
-// =============================================
-if (isset($_POST['chercher_email'])) {
+if (isset($_POST['chercher_email'])) {//lorsqu'on appui sur le bouton "rechercher"
     $email = $_POST['email'];
     
     try {
-        // SELECT avec JOIN pour trouver les réservations d'un pilote
+        // trouver les réservations d'un pilote
         $sql = "SELECT r.id, r.id_pilote, r.date_session, r.heure_session, r.statut, r.prix_total,
                        p.nom_complet, p.email, p.telephone
                 FROM reservations r
@@ -45,10 +39,8 @@ if (isset($_POST['chercher_email'])) {
     }
 }
 
-// =============================================
 // TRAITER LA MODIFICATION (TÉLÉPHONE, EMAIL, SERVICES)
-// =============================================
-if (isset($_POST['modifier'])) {
+if (isset($_POST['modifier'])) {//lorsqu'on appui sur le bouton "modifier"
     $idPilote = $_POST['pilote_id'];
     $idReservation = $_POST['reservation_id'];
     $nouveauTelephone = $_POST['nouveau_telephone'];
@@ -113,9 +105,7 @@ if (isset($_POST['modifier'])) {
     }
 }
 
-// =============================================
 // TRAITER L'ANNULATION DE RÉSERVATION
-// =============================================
 if (isset($_POST['annuler'])) {
     $idReservation = $_POST['reservation_id'];
     
@@ -125,37 +115,6 @@ if (isset($_POST['annuler'])) {
         $stmt->execute(array(':id' => $idReservation));
         
         $message = 'Réservation annulée avec succès.';
-        $messageType = 'succes';
-        
-        // Recharger les réservations
-        $sql = "SELECT r.id, r.id_pilote, r.date_session, r.heure_session, r.statut, r.prix_total,
-                       p.nom_complet, p.email, p.telephone
-                FROM reservations r
-                JOIN pilotes p ON r.id_pilote = p.id
-                WHERE p.email = :email
-                ORDER BY r.date_session DESC";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(array(':email' => $email));
-        $reservations = $stmt->fetchAll();
-        
-    } catch (PDOException $e) {
-        $message = 'Erreur : ' . $e->getMessage();
-        $messageType = 'erreur';
-    }
-}
-
-// =============================================
-// TRAITER LA CONFIRMATION DE RÉSERVATION
-// =============================================
-if (isset($_POST['confirmer'])) {
-    $idReservation = $_POST['reservation_id'];
-    
-    try {
-        // UPDATE pour changer le statut à 'confirme'
-        $stmt = $pdo->prepare("UPDATE reservations SET statut = 'confirme' WHERE id = :id");
-        $stmt->execute(array(':id' => $idReservation));
-        
-        $message = 'Réservation confirmée !';
         $messageType = 'succes';
         
         // Recharger les réservations
@@ -237,7 +196,7 @@ $couleursStatut = array(
                      <form method="post" action="mes_reservations.php" style="max-width: 600px; margin:0 auto;">
                          <div class="form-groupe" style="margin-bottom: 1rem;">
                              <label for="email">Adresse email utilisée lors de la réservation *</label>
-                             <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($email); ?>" placeholder="jean@exemple.tn" required style="width: 100%; padding:0.8rem; font-size: 1rem;">
+                             <input type="email" id="email" name="email" value="<?php echo $email; ?>" placeholder="jean@exemple.tn" required style="width: 100%; padding:0.8rem; font-size: 1rem;">
                          </div>
                          <button type="submit" name="chercher_email" style="white-space: nowrap; padding:0.6rem 1rem; font-size: 0.85rem; display: block; margin:0 auto;">RECHERCHER ▶</button>
                      </form>
@@ -290,15 +249,15 @@ $couleursStatut = array(
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
                             <div>
                                 <strong style="color: var(--vert-neon);">Nom :</strong><br>
-                                <?php echo htmlspecialchars($res['nom_complet']); ?>
+                                <?php echo $res['nom_complet']; ?>
                             </div>
                             <div>
                                 <strong style="color: var(--vert-neon);">Email :</strong><br>
-                                <?php echo htmlspecialchars($res['email']); ?>
+                                <?php echo $res['email']; ?>
                             </div>
                             <div>
                                 <strong style="color: var(--vert-neon);">Téléphone :</strong><br>
-                                <?php echo htmlspecialchars($res['telephone']); ?>
+                                <?php echo $res['telephone']; ?>
                             </div>
                             <div>
                                 <strong style="color: var(--vert-neon);">Date :</strong><br>
@@ -328,11 +287,11 @@ $couleursStatut = array(
                             <?php
                             for ($j = 0; $j < count($services); $j++) {
                                 $catLabel = ($services[$j]['categorie'] === 'session') ? '🏁 ' : '🎯 ';
-                                echo $catLabel . htmlspecialchars($services[$j]['nom_service']);
+                                echo $catLabel . $services[$j]['nom_service'];
                                 if ($services[$j]['quantite'] > 1) {
-                                    echo ' × ' . $services[$j]['quantite'];
+                                    echo ' (' . $services[$i]['quantite'] . ' Personne(s))';
                                 }
-                                echo ' — <span style="color: var(--vert-neon);">' . ($services[$j]['prix'] * $services[$j]['quantite']) . ' DT</span><br>';
+                                echo ' — <span style="color: var(--vert-neon);">' . $services[$j]['prix'] . ' DT</span><br>';
                             }
                             ?>
                         </div>
@@ -348,17 +307,17 @@ $couleursStatut = array(
                                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
                                     <div class="form-groupe">
                                         <label>Email</label>
-                                        <input type="email" name="nouveau_email" value="<?php echo htmlspecialchars($res['email']); ?>" required style="width: 100%;">
+                                        <input type="email" name="nouveau_email" value="<?php echo $res['email']; ?>" required style="width: 100%;">
                                     </div>
                                     <div class="form-groupe">
                                         <label>Téléphone</label>
-                                        <input type="tel" name="nouveau_telephone" value="<?php echo htmlspecialchars($res['telephone']); ?>" required style="width: 100%;">
+                                        <input type="tel" name="nouveau_telephone" value="<?php echo $res['telephone']; ?>" required style="width: 100%;">
                                     </div>
                                 </div>
                                 
                                 <!-- Modifier les services -->
                                 <div class="form-groupe" style="margin-bottom: 1rem;">
-                                    <label>Services (modifiez les quantités) :</label>
+                                    <label>Services</label>
                                     <div style="margin-top: 0.5rem;">
                                         <?php
                                         $servicesActuels = array();
@@ -378,12 +337,24 @@ $couleursStatut = array(
                                             $srv = $tousServices[$j];
                                             $checked = isset($servicesActuels[$srv['nom_service']]) ? 'checked' : '';
                                             $qty = isset($servicesActuels[$srv['nom_service']]) ? $servicesActuels[$srv['nom_service']] : 1;
-                                            $isSession = $srv['categorie'] === 'session' ? 'data-session="1"' : '';
+                                            $isGroupe = stripos($srv['nom_service'], 'groupe') !== false; //verifie si le service est forfait groupe(permet quatité>1)
                                         ?>
                                         <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem; padding: 0.5rem; background: rgba(255,255,255,0.03); border-radius: 4px;">
                                             <input type="checkbox" name="services_modifies[]" value="<?php echo $srv['id']; ?>" <?php echo $checked; ?> onchange="calculerPrixModif(<?php echo $res['id']; ?>)">
-                                            <span style="flex: 1; color: var(--blanc);"><?php echo htmlspecialchars($srv['nom_service']); ?> — <span style="color: var(--vert-neon);"><?php echo $srv['prix']; ?> DT</span></span>
-                                            <input type="number" name="quantites_modifies[<?php echo $srv['id']; ?>]" value="<?php echo $qty; ?>" min="1" max="20" style="width: 50px; text-align: center; padding: 0.3rem; background: var(--noir-3); border: 1px solid var(--bord); color: var(--blanc); border-radius: 4px;" onchange="calculerPrixModif(<?php echo $res['id']; ?>)">
+                                            <span style="flex: 1; color: var(--blanc);"><?php echo $srv['nom_service']; ?> — <span style="color: var(--vert-neon);"><?php echo $srv['prix']; ?> DT</span></span>
+
+                                            <?php if ($isGroupe): ?>
+                                                <!-- Forfait groupe: editable quantity -->
+                                                <input type="number"
+                                                    name="quantites_modifies[<?php echo $srv['id']; ?>]"
+                                                    value="<?php echo $qty; ?>"
+                                                    min="1" max="10"
+                                                    style="width: 50px; text-align: center; padding: 0.3rem; background: var(--noir-3); border: 1px solid var(--bord); color: var(--blanc); border-radius: 4px;"
+                                                    onchange="calculerPrixModif(<?php echo $res['id']; ?>)">
+                                            <?php else: ?>
+                                                <!-- Other services: fixed quantity = 1, hidden -->
+                                                <input type="hidden" name="quantites_modifies[<?php echo $srv['id']; ?>]" value="1">
+                                            <?php endif; ?>
                                         </div>
                                         <?php } ?>
                                     </div>
@@ -406,7 +377,7 @@ $couleursStatut = array(
                             <!-- Annuler la réservation -->
                             <form method="post" action="mes_reservations.php" style="display: inline;">
                                 <input type="hidden" name="reservation_id" value="<?php echo $res['id']; ?>">
-                                <input type="hidden" name="email" value="<?php echo htmlspecialchars($email); ?>">
+                                <input type="hidden" name="email" value="<?php echo $email; ?>">
                                 <button type="submit" name="annuler" onclick="return confirm('Êtes-vous sûr de vouloir annuler cette réservation ?');">
                                     ANNULER LA RÉSERVATION ❌
                                 </button>
@@ -480,8 +451,8 @@ $couleursStatut = array(
             $parts = array();
             for ($i = 0; $i < count($tousServices); $i++) {
                 $parts[] = $tousServices[$i]['id'] . ': ' . $tousServices[$i]['prix'];
-            }
-            echo implode(",\n        ", $parts);
+            }//exple: $parts = ["3: 50", "5: 120", "7: 30"];
+            echo implode(",\n        ", $parts);//exple: var prixServices = {3: 50, 5: 120, 7: 30};
         } catch (PDOException $e) {
             echo "";
         }
@@ -490,35 +461,41 @@ $couleursStatut = array(
     
     function calculerPrixModif(reservationId) {
         var checkboxes = document.querySelectorAll('#form-modif-' + reservationId + ' input[name="services_modifies[]"]');
+        //Elle cible uniquement les checkboxes du formulaire de cette réservation (grâce à l'ID unique form-modif-5 par exemple), 
+        //pour ne pas mélanger avec d'autres formulaires sur la même page.
         var total = 0;
         
         for (var i = 0; i < checkboxes.length; i++) {
             if (checkboxes[i].checked) {
                 var serviceId = checkboxes[i].value;
-                var qtyInput = document.querySelector('#form-modif-' + reservationId + ' input[name="quantites_modifies[' + serviceId + ']"]');
-                var qty = qtyInput ? parseInt(qtyInput.value) : 1;
+                //Pour chaque checkbox cochée, elle récupère l'id du service
                 if (prixServices[serviceId]) {
-                    total = total + (prixServices[serviceId] * qty);
+                    total = total + prixServices[serviceId];
                 }
             }
         }
         
         var prixElement = document.getElementById('prix-modif-' + reservationId);
         if (prixElement) {
-            prixElement.textContent = total + ' DT';
+            prixElement.textContent = total + ' DT';// affichage visible
         }
         
         var prixInput = document.getElementById('nouveau_prix_' + reservationId);
         if (prixInput) {
             prixInput.value = total;
         }
+        //ligne 338:<input type="hidden" id="nouveau_prix_5" name="nouveau_prix" value="0">
+//Quand l'utilisateur clique Enregistrer, le formulaire soumet ce champ au serveur, et le PHP peut faire :
+//php$nouveauPrix = $_POST['nouveau_prix']; // récupère le total calculé par JS
+//Sans ça, le PHP ne saurait pas quel prix enregistrer dans la base de données.
     }
     
     // Initialiser les prix au chargement
     window.addEventListener('DOMContentLoaded', function() {
+        //DOMContentLoaded veut dire : "exécute ce code une fois que tout le HTML est chargé".
         <?php
         if (count($reservations) > 0) {
-            for ($i = 0; $i < count($reservations); $i++) {
+            for ($i = 0; $i < count($reservations); $i++) {//pour chaque reservation, affiche le prix
                 echo 'calculerPrixModif(' . $reservations[$i]['id'] . ');' . "\n        ";
             }
         }

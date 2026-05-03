@@ -1,42 +1,38 @@
 <?php
-// =============================================
-// RESERVER.PHP - Réservation (services dynamiques)
-// =============================================
 
 require_once 'config.php';
 
 // Charger les sessions depuis la base de données
 try {
-    $stmt = $pdo->query("SELECT id, nom_service, prix FROM services WHERE categorie = 'session'");
-    $sessions = $stmt->fetchAll();
+  $stmt = $pdo->query("SELECT id, nom_service, prix FROM services WHERE categorie = 'session'");
+  $sessions = $stmt->fetchAll();
 } catch (PDOException $e) {
-    $sessions = array();
+  $sessions = array();
 }
 
 // Charger les options depuis la base de données
 try {
-    $stmt = $pdo->query("SELECT id, nom_service, prix FROM services WHERE categorie = 'option'");
-    $options = $stmt->fetchAll();
+  $stmt = $pdo->query("SELECT id, nom_service, prix FROM services WHERE categorie = 'option'");
+  $options = $stmt->fetchAll();
 } catch (PDOException $e) {
-    $options = array();
+  $options = array();
 }
 
 // Charger les instructeurs disponibles
 try {
-    $stmt = $pdo->query("SELECT id, nom, specialite FROM instructeurs");
-    $instructeurs = $stmt->fetchAll();
+  $stmt = $pdo->query("SELECT id, nom, specialite FROM instructeurs");
+  $instructeurs = $stmt->fetchAll();
 } catch (PDOException $e) {
-    $instructeurs = array();
+  $instructeurs = array();
 }
 
 // Charger les types de karts disponibles (distincts)
 try {
-    $stmt = $pdo->query("SELECT DISTINCT modele, type, puissance FROM karts WHERE statut = 'Disponible' ORDER BY modele ASC");
-    $karts = $stmt->fetchAll();
+  $stmt = $pdo->query("SELECT DISTINCT modele, type, puissance FROM karts WHERE statut = 'Disponible' ORDER BY modele ASC");
+  $karts = $stmt->fetchAll();
 } catch (PDOException $e) {
-    // En cas d'erreur, afficher pour débogage
-    echo "<p style='color:red;'>Erreur karts: " . $e->getMessage() . "</p>";
-    $karts = array();
+  echo "<p style='color:red;'>Erreur karts: " . $e->getMessage() . "</p>";
+  $karts = array();
 }
 
 // Charger les créneaux déjà occupés (statut en_attente ou confirme)
@@ -47,7 +43,7 @@ try {
     $creneauxRaw = array();
 }
 
-// Organiser par date : tableau date => liste des heures occupées
+// Les organiser par date : tableau date => liste des heures occupées
 // Ex: $creneauxOccupes['2026-11-11'] = ['15:00', '16:00']
 $creneauxOccupes = array();
 for ($i = 0; $i < count($creneauxRaw); $i++) {
@@ -57,7 +53,7 @@ for ($i = 0; $i < count($creneauxRaw); $i++) {
     if (!isset($creneauxOccupes[$dateOccupee])) {
         $creneauxOccupes[$dateOccupee] = array();
     }
-    $creneauxOccupes[$dateOccupee][] = $heureOccupee;
+    $creneauxOccupes[$dateOccupee][] = $heureOccupee;//On ajoute l’heure dans la liste de la date
 }
 ?>
 <!DOCTYPE html>
@@ -130,20 +126,26 @@ for ($i = 0; $i < count($creneauxRaw); $i++) {
                 <?php
                 // Parcourir les sessions avec un loop
                 for ($i = 0; $i < count($sessions); $i++) {
-                    $checked = ($i === 1) ? ' checked' : ''; // Session adultes par défaut
-                    // Extraire le slug (enfants, adultes, groupe) depuis le nom
+                    $checked = ($i === 1) ? ' checked' : ''; //Si c’est la 2e session (index 1) => elle est sélectionnée automatiquement
+                    // Extraire (enfants, adultes, groupe) depuis le nom
                     $nom = strtolower($sessions[$i]['nom_service']);
-                    $slug = '';
-                    if (strpos($nom, 'enfant') !== false) $slug = 'enfants';
-                    else if (strpos($nom, 'adulte') !== false) $slug = 'adultes';
-                    else if (strpos($nom, 'groupe') !== false) $slug = 'groupe';
-                    else $slug = $slug;
+                    $s = '';
+                    if (strpos($nom, 'enfant') !== false) $s = 'enfants';
+                    else if (strpos($nom, 'adulte') !== false) $s = 'adultes';
+                    else if (strpos($nom, 'groupe') !== false) $s = 'groupe';
+                    else $s = $s;
 
                     echo '<label class="choix-item">';
-                    echo '<input type="radio" name="session" value="' . $slug . '" required' . $checked . '>';
+                    echo '<input type="radio" name="session" value="' . $s . '" required' . $checked . '>';
+                    //Crée un bouton radio : name="session" => groupe unique
+                    // value => enfants / adultes / groupe
+                    // required => obligatoire
+                    // checked par defaut si c'est session adulte
                     echo '<div>';
-                    echo '<div style="font-weight: 700; color: var(--blanc);">' . htmlspecialchars($sessions[$i]['nom_service']) . '</div>';
+                    echo '<div style="font-weight: 700; color: var(--blanc);">' . $sessions[$i]['nom_service'] . '</div>';
+                    //Affiche le nom proprement
                     echo '<div style="font-size: 0.85rem; color: var(--gris);">' . $sessions[$i]['prix'] . ' DT</div>';
+                    //Affiche le prix en DT
                     echo '</div>';
                     echo '</label>';
                 }
@@ -177,12 +179,12 @@ for ($i = 0; $i < count($creneauxRaw); $i++) {
 
             <div class="form-groupe">
               <label for="participants">Nombre de participants *</label>
-              <input type="number" id="participants" name="participants" min="1" max="20" value="1" required>
+              <input type="number" id="participants" name="participants" required>
             </div>
 
             <!-- Choix des Karts (par type avec quantité) -->
             <div class="form-groupe" id="kart-selection-group">
-              <label>Type de karts <span style="color: var(--gris); font-weight: 400;">(Total max: <span id="max-karts">1</span>)</span></label>
+              <label>Type de karts <span style="color: var(--gris); font-weight: 400;">(Total max: <span id="max-karts"></span>)</span></label>
               
               <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.5rem;">
                 <?php
@@ -192,16 +194,16 @@ for ($i = 0; $i < count($creneauxRaw); $i++) {
                 <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); padding: 0.5rem 1rem; border-radius: 6px;">
                   <div>
                     <div style="font-weight: 700; color: var(--blanc);">
-                      <?php echo htmlspecialchars($karts[$i]['modele']); ?>
+                      <?php echo $karts[$i]['modele']; ?>
                     </div>
                     <div style="font-size: 0.8rem; color: var(--gris);">
-                      <?php echo htmlspecialchars($karts[$i]['type']); ?> — <?php echo htmlspecialchars($karts[$i]['puissance']); ?>
+                      <?php echo $karts[$i]['type']; ?> — <?php echo $karts[$i]['puissance']; ?>
                     </div>
                   </div>
                   
                   <input type="number" 
-                         name="karts[<?php echo htmlspecialchars($karts[$i]['modele']); ?>]" 
-                         value="0" min="0" max="20" 
+                         name="karts[<?php echo $karts[$i]['modele']; ?>]" 
+                         value="0" min="0" max="10" 
                          class="kart-qty-input"
                          style="width: 60px; text-align: center; padding: 0.5rem; background: var(--noir-3); border: 1px solid var(--bord); color: var(--blanc); border-radius: 4px;">
                 </div>
@@ -215,36 +217,37 @@ for ($i = 0; $i < count($creneauxRaw); $i++) {
 
             <!-- Script pour limiter le nombre total de karts -->
             <script>
-            var participantsInput = document.getElementById('participants');
-            var qtyInputs = document.querySelectorAll('.kart-qty-input');
-            var maxKartsLabel = document.getElementById('max-karts');
-            var warningMsg = document.getElementById('kart-warning');
+              var participantsInput = document.getElementById('participants');// champ nb participants
+              var qtyInputs = document.querySelectorAll('.kart-qty-input');// TOUS les compteurs kart
+              var maxKartsLabel = document.getElementById('max-karts');// le <span> du label
+              var warningMsg = document.getElementById('kart-warning');// message d'alerte rouge
 
             function checkKartLimits() {
-                var max = parseInt(participantsInput.value) || 1;
-                maxKartsLabel.textContent = max;
+              var max = parseInt(participantsInput.value) || 1;
+              maxKartsLabel.textContent = max;//// met à jour "(Total max: 3)" dans le label
                 
-                var totalSelected = 0;
-                for (var i = 0; i < qtyInputs.length; i++) {
-                    totalSelected = totalSelected + (parseInt(qtyInputs[i].value) || 0);
-                }
+              var totalSelected = 0;
+              for (var i = 0; i < qtyInputs.length; i++) {
+                totalSelected = totalSelected + (parseInt(qtyInputs[i].value) || 0);
+                // || 0 évite NaN si le champ est vide
+              }
 
-                if (totalSelected > max) {
-                    warningMsg.style.display = 'block';
+              if (totalSelected > max) {
+                warningMsg.style.display = 'block';
+              } else {
+                warningMsg.style.display = 'none';
+              }
+
+              // Disable/enable kart inputs when totalSelected >= max
+              for (var j = 0; j < qtyInputs.length; j++) {
+                if (totalSelected >= max && (parseInt(qtyInputs[j].value) || 0) === 0) {
+                  qtyInputs[j].disabled = true;// ne peut plus augmenter ce kart
+                  qtyInputs[j].style.opacity = '0.4';// grisé visuellement
                 } else {
-                    warningMsg.style.display = 'none';
+                  qtyInputs[j].disabled = false;// réactivé si on réduit un autre kart
+                  qtyInputs[j].style.opacity = '1';
                 }
-
-                // Disable/enable kart inputs when totalSelected >= max
-                for (var j = 0; j < qtyInputs.length; j++) {
-                    if (totalSelected >= max && (parseInt(qtyInputs[j].value) || 0) === 0) {
-                        qtyInputs[j].disabled = true;
-                        qtyInputs[j].style.opacity = '0.4';
-                    } else {
-                        qtyInputs[j].disabled = false;
-                        qtyInputs[j].style.opacity = '1';
-                    }
-                }
+              }
             }
 
             // Écouter les changements sur les inputs de karts
@@ -264,17 +267,17 @@ for ($i = 0; $i < count($creneauxRaw); $i++) {
 
             <!-- Restriction participants selon le type de session -->
             <script>
-            function majParticipants() {
-                var radios = document.getElementsByName('session');
+              function majParticipants() {
+                var radios = document.getElementsByName('session');// tous les radios session
                 var participants = document.getElementById('participants');
                 var sessionChoisie = '';
 
                 // Trouver le radio actuellement coché
                 for (var i = 0; i < radios.length; i++) {
-                    if (radios[i].checked) {
-                        sessionChoisie = radios[i].value;
-                        break;
-                    }
+                  if (radios[i].checked) {
+                    sessionChoisie = radios[i].value;
+                    break;
+                  }
                 }
 
                 if (sessionChoisie === 'adultes' || sessionChoisie === 'enfants') {
@@ -292,19 +295,17 @@ for ($i = 0; $i < count($creneauxRaw); $i++) {
 
                 // Mettre à jour la limite karts avec le nouveau nombre de participants
                 checkKartLimits();
-            }
+              }
 
-            // Attacher l'événement onchange à chaque radio de session
-            var radiosSession = document.getElementsByName('session');
-            for (var i = 0; i < radiosSession.length; i++) {
-                radiosSession[i].onchange = majParticipants;
-            }
+              // Attacher l'événement onchange à chaque radio de session
+              var radiosSession = document.getElementsByName('session');
+              for (var i = 0; i < radiosSession.length; i++) {
+                  radiosSession[i].onchange = majParticipants;
+              }
 
-            // Appliquer dès le chargement selon le radio coché par défaut
-            majParticipants();
+              // Appliquer dès le chargement selon le radio coché par défaut
+              majParticipants();
             </script>
-
-            <!-- Instructeur will be added dynamically after coaching choice -->
 
             <!-- Services supplémentaires — chargés depuis la base de données -->
             <div class="form-groupe">
@@ -314,27 +315,33 @@ for ($i = 0; $i < count($creneauxRaw); $i++) {
                 // Parcourir les options depuis la base
                 for ($i = 0; $i < count($options); $i++) {
                     // Créer un nom de checkbox simple depuis le nom du service
-                    $nom = $options[$i]['nom_service'];
-                    $slug = strtolower($nom);
-                    $slug = str_replace(' ', '_', $slug);
-                    $slug = str_replace('\'', '', $slug);
+                    //: les noms dans la BDD sont lisibles ("Enregistrement vidéo") mais traiter_reservation.php attend 
+                    // des noms courts ("video", "coaching"…). Ce PHP fait le pont entre les deux
+                    $nom = $options[$i]['nom_service'];// "Enregistrement vidéo" (tel qu'en BDD)
+                    $s = strtolower($nom);
+                    $s = str_replace(' ', '_', $s);
+                    $s = str_replace('\'', '', $s); //supprime les apostrophes (pour "d'entreprise")
                     // Map vers les noms utilisés dans traiter_reservation.php
                     $map = array(
                         'enregistrement_vidéo' => 'video',
-                        'enregistrement_video' => 'video',
+                        'enregistrement_video' => 'video',// doublon sans accent (sécurité)
                         'forfait_multi-courses' => 'forfait',
                         'coaching_de_course' => 'coaching',
                         'anniversaire' => 'anniv',
                         'événement_d\'entreprise' => 'event_entreprise',
                         'événement_dentreprise' => 'event_entreprise',
                         'location_piste_privée' => 'location',
-                        'location_piste_privee' => 'location'
+                        'location_piste_privee' => 'location'// doublon sans accent
                     );
-                    $checkboxName = isset($map[$slug]) ? $map[$slug] : $slug;
+                    $checkboxName = isset($map[$s]) ? $map[$s] : $s;
+                    // Si trouvé dans $map :prend le nom court ("video")
+                    // Sinon :garde $s tel quel (fallback)
 
                     echo '<label class="choix-item">';
                     echo '<input type="checkbox" name="' . $checkboxName . '" value="' . $checkboxName . '">';
-                    echo htmlspecialchars($nom) . ' (+' . $options[$i]['prix'] . ' DT)';
+                    //exple: <input type="checkbox" name="video" value="video">
+                    echo $nom . ' (+' . $options[$i]['prix'] . ' DT)';
+                    //exple: Enregistrement vidéo (+15 DT)
                     echo '</label>';
                 }
                 ?>
@@ -343,13 +350,14 @@ for ($i = 0; $i < count($creneauxRaw); $i++) {
 
             <!-- Instructeur (affiché seulement si Coaching de course est coché) -->
             <?php if (count($instructeurs) > 0) { ?>
-            <div class="form-groupe" id="instructeur-group" style="display: none;">
+            <div class="form-groupe" id="instructeur-group" style="display: none;"><!-- caché par défaut -->
+              <!-- javascript gère son affichage lorsque coaching est coché-->
               <label for="instructeur">Instructeur préféré (optionnel)</label>
               <select id="instructeur" name="instructeur">
                 <option value="0">— pas de préférance —</option>
                 <?php
                 for ($i = 0; $i < count($instructeurs); $i++) {
-                    echo '<option value="' . $instructeurs[$i]['id'] . '">' . htmlspecialchars($instructeurs[$i]['nom']) . ' — ' . htmlspecialchars($instructeurs[$i]['specialite']) . '</option>';
+                    echo '<option value="' . $instructeurs[$i]['id'] . '">' . $instructeurs[$i]['nom'] . ' — ' . $instructeurs[$i]['specialite'] . '</option>';
                 }
                 ?>
               </select>
@@ -517,55 +525,64 @@ for ($i = 0; $i < count($creneauxRaw); $i++) {
   <script src="script.js"></script>
 
   <script>
-  // ==================== CRÉNEAUX OCCUPÉS ====================
-  // Données injectées depuis PHP : objet { 'YYYY-MM-DD': ['HH:MM', ...], ... }
-  var creneauxOccupesData = <?php echo json_encode($creneauxOccupes); ?>;
-
+    var creneauxOccupesData = {};
+    <?php
+    foreach ($creneauxOccupes as $date => $heures) {
+      echo 'creneauxOccupesData["' . $date . '"] = [';
+      for ($i = 0; $i < count($heures); $i++) {
+          echo '"' . $heures[$i] . '"';
+          if ($i < count($heures) - 1) echo ', ';
+      }
+      echo '];' . "\n";
+    }
+    ?>
   // Appelée quand l'utilisateur change la date
   // Désactive les créneaux déjà pris pour ce jour, réactive les autres
-  function filtrerCreneaux() {
-      var dateVal = document.getElementById('date').value;
-      var select  = document.getElementById('creneau');
-      var options = select.options;
+    function filtrerCreneaux() {
+      var dateVal = document.getElementById('date').value;//la date choisie
+      var select  = document.getElementById('creneau');// le <select> des créneaux
+      var options = select.options;//tous les <option> dedans
 
       // Liste des heures occupées pour la date choisie (vide si aucune)
       var occupes = creneauxOccupesData[dateVal] || [];
 
-      for (var i = 0; i < options.length; i++) {
-          var opt = options[i];
+      for (var i = 0; i < options.length; i++) {// Parcourir tous les créneaux du <select>
+        var opt = options[i];
 
-          // Ignorer l'option placeholder "— Choisissez un créneau —"
-          if (opt.value === '') {
-              continue;
-          }
+        // Ignorer l'option placeholder "— Choisissez un créneau —"
+        if (opt.value === '') {
+          continue;
+        }
 
-          // Chercher si ce créneau est dans la liste des occupés
-          var estOccupe = false;
-          for (var j = 0; j < occupes.length; j++) {
-              if (occupes[j] === opt.value) {
-                  estOccupe = true;
-                  break;
-              }
+        // Chercher si ce créneau est dans la liste des occupés
+        var estOccupe = false;
+        for (var j = 0; j < occupes.length; j++) {
+          if (occupes[j] === opt.value) {
+            estOccupe = true;
+            break;
           }
+        }
 
-          if (estOccupe) {
-              // Griser et désactiver ce créneau
-              opt.disabled = true;
-              opt.style.color = '#555';
-              opt.text = opt.value + ' (Occupé)';
-          } else {
-              // Réactiver ce créneau
-              opt.disabled = false;
-              opt.style.color = '';
-              opt.text = opt.value; // Restaurer le texte d'origine
-          }
+        if (estOccupe) {
+          // Griser et désactiver ce créneau
+          opt.disabled = true;
+          opt.style.color = '#555';
+          opt.text = opt.value + ' (Occupé)';
+        } else {
+          // Réactiver ce créneau
+          opt.disabled = false;
+          opt.style.color = '';
+          opt.text = opt.value; // Restaurer le texte d'origine
+        }
       }
 
       // Si le créneau actuellement sélectionné vient d'être désactivé, réinitialiser
       if (select.selectedIndex > 0 && select.options[select.selectedIndex].disabled) {
-          select.value = '';
+        select.value = '';
+        //exple:  l'utilisateur avait choisi 15:00, puis change la date — si 15:00 est occupé ce nouveau jour, 
+        //on remet le <select> sur le placeholder pour l'obliger à rechoisir
       }
-  }
+    }
   </script>
 </body>
 </html>

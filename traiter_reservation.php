@@ -1,9 +1,5 @@
 <?php
-// =============================================
-// TRAITER_RESERVATION.PHP - Traitement du formulaire
-// =============================================
 
-// Inclure la connexion à la base de données
 require_once 'config.php';
 
 // Vérifier si le formulaire a été soumis avec POST
@@ -22,17 +18,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Récupérer les karts choisis par type (ex: 'Sodi RSX' => 2)
     $kartsChosen = array();
     if (isset($_POST['karts']) && is_array($_POST['karts'])) {
+        //Double vérification : isset s'assure que le champ existe, is_array s'assure que c'est bien un tableau
+        //si quelqu'un envoie une requête malformée, ça ne plantera pas.
         foreach ($_POST['karts'] as $modele => $qty) {
+            // $_POST['karts'] ressemble à : ['Sodi RSX' => '2', 'Formula K' => '0', 'EKL 125' => '1']
             if ($qty > 0) {
                 // On stocke le modèle et la quantité (ex: "Sodi RSX (x2)")
-                $kartsChosen[] = htmlspecialchars($modele) . ' (x' . intval($qty) . ')';
+                $kartsChosen[] = $modele . ' (x' . intval($qty) . ')';
             }
         }
     }
     // On sauvegarde le tout dans la colonne id_kart (format texte)
     $idKart = count($kartsChosen) > 0 ? implode(', ', $kartsChosen) : null;
-    $idInstructeur = isset($_POST['instructeur']) && $_POST['instructeur'] !== '' && $_POST['instructeur'] !== '0' ? $_POST['instructeur'] : null;
-    
+    //implode assemble le tableau en une seule chaîne séparée par des virgules — parce que la colonne id_kart en BDD est de type texte
+    // Résultat : "Sodi RSX (x2), EKL 125 (x1)"   ou   null si aucun kart choisi
+    $idInstructeur = isset($_POST['instructeur'])       // le champ existe ?
+              && $_POST['instructeur'] !== ''        // pas vide ?
+              && $_POST['instructeur'] !== '0'       // pas "pas de préférence" ?
+              ? $_POST['instructeur']                // oui => prendre l'ID choisi
+              : null;                                // non => null
+             
     // Si pas de préférance (0 ou vide), choisir le premier instructeur disponible
     if ($idInstructeur === null) {
         try {
@@ -56,9 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['event_entreprise'])) $servicesSelectionnes[] = 'event_entreprise';
     if (isset($_POST['location'])) $servicesSelectionnes[] = 'location';
     
-    // =============================================
-    // ÉTAPE 1 : Insérer ou retrouver le pilote
-    // =============================================
+    // Etape1: Insérer ou retrouver le pilote
     try {
         // Chercher si le pilote existe déjà par email
         $stmt = $pdo->prepare("SELECT id FROM pilotes WHERE email = :email");
@@ -87,9 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $idPilote = $pdo->lastInsertId();
         }
         
-        // =============================================
-        // ÉTAPE 2 : Insérer la réservation
-        // =============================================
+        //Etape2: Insérer la réservation
         $stmt = $pdo->prepare("INSERT INTO reservations (id_pilote, date_session, heure_session, statut, id_kart, id_instructeur, prix_total) VALUES (:idPilote, :date, :heure, 'en_attente', :kart, :instructeur, 0)");
         $stmt->execute(array(
             ':idPilote' => $idPilote,
@@ -100,10 +101,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ));
         $idReservation = $pdo->lastInsertId();
         
-        // =============================================
-        // ÉTAPE 3 : Insérer les services dans reservation_services
-        // =============================================
-        
+        // ÉTAPE 3 : Insérer les services dans reservation_services        
         // Mapping entre les noms des checkboxes et les noms dans la table services
         $mapServices = array(
             'enfants' => 'Session Enfants',
@@ -149,10 +147,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        // =============================================
-        // ÉTAPE 4 : Calculer et sauvegarder le prix total
-        // =============================================
-        $stmt = $pdo->prepare("SELECT SUM(s.prix * rs.quantite) as total FROM reservation_services rs JOIN services s ON rs.id_service = s.id WHERE rs.id_reservation = :idRes");
+        //ÉTAPE 4 : Calculer et sauvegarder le prix total
+        $stmt = $pdo->prepare("SELECT SUM(s.prix) as total FROM reservation_services rs JOIN services s ON rs.id_service = s.id WHERE rs.id_reservation = :idRes");
         $stmt->execute(array(':idRes' => $idReservation));
         $result = $stmt->fetch();
         $prixTotal = $result['total'] ? $result['total'] : 0;

@@ -1,7 +1,4 @@
 <?php
-// =============================================
-// CLASSEMENTS.PHP - Classement dynamique (performances DB)
-// =============================================
 
 require_once 'config.php';
 
@@ -38,9 +35,13 @@ try {
 
 // Fonction pour formater le temps (afficher depuis TIME(3))
 function afficherTemps($temps) {
-    // Le temps vient de MySQL TIME(3) au format HH:MM:SS.mmm
-    // On affiche MM:SS.mmm
-    return $temps;
+    // découper HH:MM:SS.mmm
+    $parts = explode(':', $temps);
+
+    $minutes = $parts[1];
+    $seconds_millis = $parts[2];
+
+    return $minutes . ':' . $seconds_millis;
 }
 
 // Fonction pour déterminer la catégorie selon le nombre de sessions
@@ -59,22 +60,15 @@ function getCategorieClass($categorie) {
     return 'badge-debutant';
 }
 
-// Fonction pour calculer les points (simple : 1000 - temps en centièmes)
-function calculerPoints($tempsStr, $nbSessions) {
-    // Convertir temps en centièmes pour le calcul
-    // Format: HH:MM:SS.mmm → total millisecondes
-    $parts = explode(':', $tempsStr);
-    if (count($parts) === 3) {
-        $heures = intval($parts[0]);
-        $minutes = intval($parts[1]);
-        $secondes = floatval($parts[2]);
-        $totalMs = ($heures * 3600 + $minutes * 60 + $secondes) * 1000;
-        // Points = (75000 - totalMs) / 100 + (nbSessions * 5)
-        $points = floor((75000 - $totalMs) / 100 + ($nbSessions * 5));
-        if ($points < 0) $points = 0;
-        return $points;
+// Fonction pour calculer les points 
+function calculerPoints($position) {
+    $points = 25 - (($position - 1) * 2);
+
+    if ($points < 0) {
+        $points = 0;
     }
-    return 0;
+
+    return $points;
 }
 ?>
 <!DOCTYPE html>
@@ -124,7 +118,7 @@ function calculerPoints($tempsStr, $nbSessions) {
       </div>
       <div>
         <span style="display: block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gris); margin-bottom: 4px;">Pilote</span>
-        <span style="font-family: Impact, sans-serif; font-size: 1.5rem; font-weight: 700; text-transform: uppercase; color: var(--blanc);"><?php echo htmlspecialchars($recordPilote); ?></span>
+        <span style="font-family: Impact, sans-serif; font-size: 1.5rem; font-weight: 700; text-transform: uppercase; color: var(--blanc);"><?php echo $recordPilote; ?></span>
       </div>
       <div>
         <span style="display: block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gris); margin-bottom: 4px;">Date</span>
@@ -132,7 +126,7 @@ function calculerPoints($tempsStr, $nbSessions) {
       </div>
       <div>
         <span style="display: block; font-size: 0.65rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gris); margin-bottom: 4px;">Kart</span>
-        <span style="font-size: 0.95rem; color: var(--gris-clair); font-family: monospace;"><?php echo htmlspecialchars($recordKart); ?></span>
+        <span style="font-size: 0.95rem; color: var(--gris-clair); font-family: monospace;"><?php echo $recordKart; ?></span>
       </div>
     </div>
     <?php } ?>
@@ -150,12 +144,13 @@ function calculerPoints($tempsStr, $nbSessions) {
         <?php
         // 2e place
         $pilote2 = $classement[1];
-        $pts2 = calculerPoints($pilote2['meilleur_temps'], $pilote2['nb_sessions']);
+        $pts2 = calculerPoints(2);
         $init2 = strtoupper(substr($pilote2['nom_complet'], 0, 1));
+        //premiere lettre du nom en majus
         ?>
         <div class="podium-pilote podium-2e">
           <div class="podium-avatar"><?php echo $init2; ?></div>
-          <div class="podium-nom"><?php echo htmlspecialchars($pilote2['nom_complet']); ?></div>
+          <div class="podium-nom"><?php echo $pilote2['nom_complet']; ?></div>
           <div class="podium-chrono"><?php echo afficherTemps($pilote2['meilleur_temps']); ?></div>
           <div class="podium-pts"><?php echo $pts2; ?> pts</div>
           <div class="podium-marche podium-marche-2">
@@ -167,13 +162,13 @@ function calculerPoints($tempsStr, $nbSessions) {
         <?php
         // 1re place
         $pilote1 = $classement[0];
-        $pts1 = calculerPoints($pilote1['meilleur_temps'], $pilote1['nb_sessions']);
+        $pts1 = calculerPoints(1);
         $init1 = strtoupper(substr($pilote1['nom_complet'], 0, 1));
         ?>
         <div class="podium-pilote podium-1er">
           <div class="podium-couronne">👑</div>
           <div class="podium-avatar podium-avatar-or"><?php echo $init1; ?></div>
-          <div class="podium-nom podium-nom-or"><?php echo htmlspecialchars($pilote1['nom_complet']); ?></div>
+          <div class="podium-nom podium-nom-or"><?php echo $pilote1['nom_complet']; ?></div>
           <div class="podium-chrono podium-chrono-or">⚡ <?php echo afficherTemps($pilote1['meilleur_temps']); ?></div>
           <div class="podium-pts"><?php echo $pts1; ?> pts</div>
           <div class="podium-marche podium-marche-1">
@@ -185,12 +180,12 @@ function calculerPoints($tempsStr, $nbSessions) {
         <?php
         // 3e place
         $pilote3 = $classement[2];
-        $pts3 = calculerPoints($pilote3['meilleur_temps'], $pilote3['nb_sessions']);
+        $pts3 = calculerPoints(3);
         $init3 = strtoupper(substr($pilote3['nom_complet'], 0, 1));
         ?>
         <div class="podium-pilote podium-3e">
           <div class="podium-avatar podium-avatar-bro"><?php echo $init3; ?></div>
-          <div class="podium-nom"><?php echo htmlspecialchars($pilote3['nom_complet']); ?></div>
+          <div class="podium-nom"><?php echo $pilote3['nom_complet']; ?></div>
           <div class="podium-chrono"><?php echo afficherTemps($pilote3['meilleur_temps']); ?></div>
           <div class="podium-pts"><?php echo $pts3; ?> pts</div>
           <div class="podium-marche podium-marche-3">
@@ -232,7 +227,7 @@ function calculerPoints($tempsStr, $nbSessions) {
         <table>
           <thead>
             <tr>
-              <th style="width: 50px;">#</th>
+              <th style="width: 60px;">#</th>
               <th>Pilote</th>
               <th>Catégorie</th>
               <th>Meilleur temps</th>
@@ -250,7 +245,7 @@ function calculerPoints($tempsStr, $nbSessions) {
                 $rang = $i + 1;
                 $categorie = getCategorie($pilote['nb_sessions']);
                 $catClass = getCategorieClass($categorie);
-                $points = calculerPoints($pilote['meilleur_temps'], $pilote['nb_sessions']);
+                $points = calculerPoints($rang);
                 
                 // Classement de la cellule rang
                 $rangClass = 'rang';
@@ -264,12 +259,12 @@ function calculerPoints($tempsStr, $nbSessions) {
             ?>
             <tr>
               <td><span class="<?php echo $rangClass; ?>"><?php echo $rang; ?></span></td>
-              <td><div class="pilote-nom"><?php echo htmlspecialchars($pilote['nom_complet']); ?></div></td>
+              <td><span class="pilote-nom"><?php echo $pilote['nom_complet']; ?></div></td>
               <td><span class="badge-cat <?php echo $catClass; ?>"><?php echo $categorie; ?></span></td>
               <td><span class="<?php echo $chronoClass; ?>"><?php if ($rang === 1) echo '⚡ '; ?><?php echo afficherTemps($pilote['meilleur_temps']); ?></span></td>
               <td style="font-family: Impact, sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--blanc);"><?php echo $points; ?></td>
               <td style="color: var(--gris); font-family: monospace;"><?php echo $pilote['nb_sessions']; ?></td>
-              <td style="color: var(--gris);"><?php echo htmlspecialchars($pilote['kart_utilise']); ?></td>
+              <td style="color: var(--gris);"><?php echo $pilote['kart_utilise']; ?></td>
             </tr>
             <?php } ?>
 
@@ -304,8 +299,8 @@ function calculerPoints($tempsStr, $nbSessions) {
     </section>
 
     <div class="bande-cta">
-      <h2>BATTEZ LE RECORD : <?php echo $recordTemps !== '' ? $recordTemps : '---'; ?></h2>
-      <p>Pensez-vous pouvoir faire mieux que <?php echo $recordPilote !== '' ? htmlspecialchars($recordPilote) : 'personne'; ?> ? La piste vous attend.</p>
+      <h2>BATTEZ LE RECORD : <?php echo $recordTemps !== '' ? afficherTemps($recordTemps) : '---'; ?></h2>
+      <p>Pensez-vous pouvoir faire mieux que <?php echo $recordPilote !== '' ? afficherTemps($recordTemps) : 'personne'; ?> ? La piste vous attend.</p>
       <a href="reserver.php" class="btn-blanc">RELEVER LE DÉFI ▶</a>
     </div>
     <a href="#top" class="scroll-top">↑</a>

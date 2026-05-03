@@ -1,22 +1,22 @@
 <?php
-// =============================================
-// CONFIRMATION.PHP - Page de confirmation
-// =============================================
 
-// Inclure la connexion
 require_once 'config.php';
 
 // Vérifier si l'ID est passé dans l'URL
 if (!isset($_GET['id'])) {
     header('Location: reserver.php');
     exit();
-}
+}//=> C'est une protection contre l'accès direct à confirmation.php sans ID
+
+/* $_GET['id'] est un tableau superglobal PHP qui récupère la valeur du paramètre `id` de la chaîne de requête de l'URL.
+Lorsqu'un navigateur envoie une requête GET à un script PHP (par exemple, `http://example.com/page.php?id=123`),
+//PHP analyse l'URL et remplit le tableau `$_GET` avec les paires clé-valeur trouvées dans la chaîne de requête. 
+//Accéder à `$_GET['id']` permet d'extraire la valeur associée à la clé `id`, qui est `123` dans cet exemple. */
 
 $id = $_GET['id'];
 
 // Récupérer la réservation avec JOIN sur pilotes et reservation_services
 try {
-    // SELECT avec JOIN pour avoir toutes les infos
     $sql = "SELECT r.id, r.date_session, r.heure_session, r.statut, r.prix_total,
                    p.nom_complet, p.email, p.telephone
             FROM reservations r
@@ -95,7 +95,7 @@ $couleursStatut = array(
             <div class="page-header-contenu">
                 <span class="label-section" style="margin-bottom: 14px;">Confirmation</span>
                 <h1>RÉSERVATION<br><span>CONFIRMÉE ✅</span></h1>
-                <p>Merci <?php echo htmlspecialchars($reservation['nom_complet']); ?> ! Votre réservation a été enregistrée avec succès.</p>
+                <p>Merci <?php echo $reservation['nom_complet']; ?> ! Votre réservation a été enregistrée avec succès.</p>
             </div>
         </div>
 
@@ -110,15 +110,15 @@ $couleursStatut = array(
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
                         <div>
                             <strong style="color: var(--vert-neon);">Nom :</strong><br>
-                            <?php echo htmlspecialchars($reservation['nom_complet']); ?>
+                            <?php echo $reservation['nom_complet']; ?>
                         </div>
                         <div>
                             <strong style="color: var(--vert-neon);">Email :</strong><br>
-                            <?php echo htmlspecialchars($reservation['email']); ?>
+                            <?php echo $reservation['email']; ?>
                         </div>
                         <div>
                             <strong style="color: var(--vert-neon);">Téléphone :</strong><br>
-                            <?php echo htmlspecialchars($reservation['telephone']); ?>
+                            <?php echo $reservation['telephone']; ?>
                         </div>
                         <div>
                             <strong style="color: var(--vert-neon);">Date :</strong><br>
@@ -130,7 +130,7 @@ $couleursStatut = array(
                         </div>
                         <div>
                             <strong style="color: var(--vert-neon);">Statut :</strong><br>
-                            <span style="color: <?php echo $couleursStatut[$reservation['statut']]; ?>">
+                            <span id="statut-label" style="color: <?php echo $couleursStatut[$reservation['statut']]; ?>">
                                 <?php echo $labelsStatut[$reservation['statut']]; ?>
                             </span>
                         </div>
@@ -148,11 +148,11 @@ $couleursStatut = array(
                             } else {
                                 $catLabel = '🎯 ';
                             }
-                            echo $catLabel . htmlspecialchars($services[$i]['nom_service']);
+                            echo $catLabel . $services[$i]['nom_service'];
                             if ($services[$i]['quantite'] > 1) {
-                                echo ' × ' . $services[$i]['quantite'];
+                                echo ' (' . $services[$i]['quantite'] . 'Personne(s))';
                             }
-                            echo ' — <span style="color: var(--vert-neon);">' . ($services[$i]['prix'] * $services[$i]['quantite']) . ' DT</span><br>';
+                            echo ' — <span style="color: var(--vert-neon);">' . $services[$i]['prix'] . ' DT</span><br>';
                         }
                         ?>
                     </div>
@@ -174,6 +174,7 @@ $couleursStatut = array(
                 <!-- Boutons d'action -->
                 <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap;">
                     <a href="mes_reservations.php?email=<?php echo urlencode($reservation['email']); ?>" class="btn">
+                                                               <!--encode l'adresse e-mail stockée dans le tableau $reservation-->
                         GÉRER MA RÉSERVATION ▶
                     </a>
                     <a href="index.html" class="btn btn-outline">
@@ -230,20 +231,18 @@ $couleursStatut = array(
     <script>
     // Auto-confirmer la réservation après 2 secondes
     setTimeout(function() {
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'auto_confirmer.php?id=<?php echo $reservation['id']; ?>', true);
-        xhr.onload = function() {
-            if (xhr.responseText === 'OK') {
-                console.log('Réservation auto-confirmée après 2 secondes');
-                var statutElement = document.querySelector('[style*="color: var(--jaune)"]');
-                if (statutElement) {
-                    statutElement.style.color = 'var(--vert-neon)';
-                    statutElement.textContent = 'Confirmée ✅';
+        fetch('auto_confirmer.php?id=<?php echo $reservation['id']; ?>')//appelle auto_confirmer.php
+            .then(function(response) { return response.text(); })
+            .then(function(text) {
+                if (text.trim() === 'OK') { //text.trim() is a built-in JavaScript string method that removes whitespace from both ends of a string
+                    var statutElement = document.getElementById('statut-label');
+                    if (statutElement) {
+                        statutElement.style.color = 'var(--vert-neon)';
+                        statutElement.textContent = 'Confirmée ✅';
+                    }
                 }
-            }
-        };
-        xhr.send();
-    }, 3000);
+            });
+    }, 2000);
     </script>
 </body>
 </html>
