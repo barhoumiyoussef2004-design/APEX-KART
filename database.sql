@@ -1,27 +1,7 @@
--- phpMyAdmin SQL Dump
--- version 5.2.1deb3
--- https://www.phpmyadmin.net/
---
--- Host: localhost:3306
--- Generation Time: Apr 30, 2026 at 04:46 PM
--- Server version: 8.0.45-0ubuntu0.24.04.1
--- PHP Version: 8.3.6
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
 
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
-
---
--- Database: `apexkart`
---
-
--- --------------------------------------------------------
 
 --
 -- Table structure for table `disponibilites_instructeurs`
@@ -176,14 +156,14 @@ CREATE TABLE `performances` (
 --
 
 INSERT INTO `performances` (`id`, `id_pilote`, `temps_tour`, `date_performance`, `kart_utilise`) VALUES
-(1, 1, '01:14:00.443', '2025-03-14', 'K7'),
-(2, 1, '01:14:00.620', '2025-02-20', 'K3'),
-(3, 2, '01:14:00.493', '2025-03-10', 'K12'),
-(4, 2, '01:15:00.100', '2025-02-15', 'K5'),
-(5, 3, '01:14:00.570', '2025-03-01', 'K3'),
-(6, 3, '01:15:00.200', '2025-01-20', 'K7'),
-(7, 4, '01:15:00.179', '2025-03-08', 'K15'),
-(8, 4, '01:16:00.000', '2025-02-28', 'K1');
+(1, 1, '00:01:14.443', '2025-03-14', 'K7'),
+(2, 1, '00:01:14.620', '2025-02-20', 'K3'),
+(3, 2, '00:01:14.493', '2025-03-10', 'K12'),
+(4, 2, '00:01:15.100', '2025-02-15', 'K5'),
+(5, 3, '00:01:14.570', '2025-03-01', 'K3'),
+(6, 3, '00:01:15.200', '2025-01-20', 'K7'),
+(7, 4, '00:01:15.179', '2025-03-08', 'K15'),
+(8, 4, '00:01:16.000', '2025-02-28', 'K1');
 
 -- --------------------------------------------------------
 
@@ -286,7 +266,7 @@ INSERT INTO `services` (`id`, `nom_service`, `categorie`, `prix`) VALUES
 (5, 'Forfait Multi-Courses', 'option', 170.00),
 (6, 'Coaching de course', 'option', 50.00),
 (7, 'Anniversaire', 'option', 350.00),
-(8, 'Événement d\'Entreprise', 'option', 800.00),
+(8, "Événement d\'Entreprise", 'option', 800.00),
 (9, 'Location Piste Privée', 'option', 500.00);
 
 --
@@ -434,7 +414,3 @@ ALTER TABLE `reservation_services`
   ADD CONSTRAINT `reservation_services_ibfk_1` FOREIGN KEY (`id_reservation`) REFERENCES `reservations` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `reservation_services_ibfk_2` FOREIGN KEY (`id_service`) REFERENCES `services` (`id`);
 COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
