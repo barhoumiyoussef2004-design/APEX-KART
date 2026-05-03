@@ -218,7 +218,6 @@ INSERT INTO `reservation_services` (`id_reservation`, `id_service`, `quantite`) 
 (2, 5, 1),
 (2, 6, 1);
 
------------------------------------------------------------
 
 ALTER TABLE `disponibilites_instructeurs`
   ADD PRIMARY KEY (`id`),
